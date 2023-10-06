@@ -7,6 +7,9 @@ import { HeaderComponent } from './header/header.component';
 import { ListaProdutosComponent } from './lista-produtos/lista-produtos.component';
 import { LoginComponent } from './login/login.component';
 import { Router, RouterModule } from '@angular/router';
+import { GestaoComponent } from './gestao/gestao.component';
+import { PainelProdutosComponent } from './painel-produtos/painel-produtos.component';
+import { TopBarComponent } from './top-bar/top-bar.component';
 
 
 @NgModule({
@@ -15,13 +18,18 @@ import { Router, RouterModule } from '@angular/router';
     AppRoutingModule,
     RouterModule.forRoot([
       { path: '', component: ListaProdutosComponent },
-      { path: 'login', component: LoginComponent }])
+      { path: 'login', component: LoginComponent },
+      { path: 'gestao', component: GestaoComponent },
+      { path: 'produtos', component: PainelProdutosComponent}])
   ],
   declarations: [
     AppComponent,
     HeaderComponent,
     ListaProdutosComponent,
-    LoginComponent
+    LoginComponent,
+    GestaoComponent,
+    PainelProdutosComponent,
+    TopBarComponent
   ],
 
   providers: [],
