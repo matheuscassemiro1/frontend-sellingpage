@@ -18,7 +18,7 @@ export class ListaProdutosComponent {
     //window.alert(`O ${produto.nome} foi adicionado ao seu carrinho!`)
   }
 
-
+  
 
   carrinhoCheio(): boolean {
     if (this.carrinhoService.listarCarrinho().length > 0) {
