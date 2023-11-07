@@ -1,44 +1,111 @@
 <app-header></app-header>
-<div class="row mb-2 mt-1" style="max-width: 99%; margin-left: 0.5vw;">
-
+<div class="row mb-2 mt-1" style="max-width: 99%; margin-left: 0.5vw">
   <div>
     <span>our items</span>
   </div>
-  <hr>
-  <div style="display: flex; justify-content: center; margin: 0 auto; flex-direction: row; flex-wrap: wrap; gap: 10px;">
-    <div *ngFor="let produto of produtos" style="flex: 0 0 23%;">
-      <div class="card mb-4 shadow-sm" style="height: 100%;">
-        <h3 class="mb-0 mt-2" style="text-align: center; grid-row: 1;">
-          <span class="text" style="font-family: cursive;">{{produto.nome}}</span>
+  <hr />
+  <div
+    style="
+      display: flex;
+      justify-content: center;
+      margin: 0 auto;
+      flex-direction: row;
+      flex-wrap: wrap;
+      gap: 10px;
+    "
+  >
+    <div *ngFor="let produto of produtos" style="flex: 0 0 23%">
+      <div class="card mb-4 shadow-sm" style="height: 100%">
+        <h3 class="mb-0 mt-2" style="text-align: center; grid-row: 1">
+          <span class="text" style="font-family: cursive">{{
+            produto.nome
+          }}</span>
         </h3>
-        <div class="card-body d-grid" style="align-items: end;">
-          <img class="card-img-right" data-src="{{produto.url}}" alt="Thumbnail [200x250]" src="{{produto.url}}"
-            style="width: 100%;">
-          <div style="display: flex; flex-wrap: wrap; gap: 10px; justify-content: center; align-items: center;">
-            <div style="display: flex; justify-content: center; align-items: center;">
-              <button class="btn"
-                (click)="produto.quantidade == 1 ? produto.quantidade = 1 : produto.quantidade = produto.quantidade -1; ">-</button>
-              <input type="number" value='{{produto.quantidade}}' style="width: 20%; min-width: 25%; text-align: center;">
-              <button class="btn" (click)="produto.quantidade = produto.quantidade +1">+</button>
+        <div class="card-body d-grid" style="align-items: end">
+          <img
+            class="card-img-right"
+            data-src="{{ produto.url }}"
+            alt="Thumbnail [200x250]"
+            src="{{ produto.url }}"
+            style="width: 100%"
+          />
+          <div
+            style="
+              display: flex;
+              flex-wrap: wrap;
+              gap: 10px;
+              justify-content: center;
+              align-items: center;
+            "
+          >
+            <div
+              style="
+                display: flex;
+                justify-content: center;
+                align-items: center;
+              "
+            >
+              <button
+                class="btn"
+                (click)="
+                  produto.quantidade == 1
+                    ? (produto.quantidade = 1)
+                    : (produto.quantidade = produto.quantidade - 1)
+                "
+              >
+                -
+              </button>
+              <input
+                type="number"
+                [value]="produto.quantidade"
+                style="width: 20%; min-width: 25%; text-align: center"
+              />
+              <button
+                class="btn"
+                (click)="produto.quantidade = produto.quantidade + 1"
+              >
+                +
+              </button>
             </div>
-            <span class="shadow-lg p-1 bg-success rounded"
-              style="font-family: serif; font-size: large; font-weight: bold; color: rgb(255, 255, 255); font-family: cursive;">R$
-              {{produto.valor.toFixed(2).toString().replace('.', ',')}}</span>
-            <button type="button" (click)='adicionarAoCarrinho(produto)' style="font-size: 12px;"
-              class="btn btn-info">Adicionar ao
-              carrinho</button>
+            <span
+              class="shadow-lg p-1 bg-success rounded"
+              style="
+                font-family: serif;
+                font-size: large;
+                font-weight: bold;
+                color: rgb(255, 255, 255);
+                font-family: cursive;
+              "
+              >R$
+              {{ produto.valor.toFixed(2).toString().replace(".", ",") }}</span
+            >
+            <button
+              type="button"
+              (click)="adicionarAoCarrinho(produto)"
+              style="font-size: 12px"
+              class="btn btn-info"
+            >
+              Adicionar ao carrinho
+            </button>
           </div>
-
-
         </div>
-
       </div>
     </div>
   </div>
 
-
   <div *ngIf="carrinhoCheio()">
-    <button class="btn btn-warning text-align-center"
-      style="width: 100%; margin-left: auto; bottom: 10%; position: fixed; opacity: 80%;"
-      (click)="fecharCarrinho()">FINALIZAR COMPRA</button>
+    <button
+      class="btn btn-warning text-align-center"
+      style="
+        width: 100%;
+        margin-left: auto;
+        bottom: 10%;
+        position: fixed;
+        opacity: 80%;
+      "
+      (click)="fecharCarrinho()"
+    >
+      FINALIZAR COMPRA
+    </button>
   </div>
+</div>
