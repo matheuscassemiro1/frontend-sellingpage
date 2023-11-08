@@ -11,7 +11,7 @@ export class CarrinhoService {
   }
 
   listarCarrinho(){
-    return this.carrinho.map(produto => produto.nome);
+    return this.carrinho;
   }
 
   limparCarrinho(){

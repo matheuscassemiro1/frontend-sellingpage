@@ -3,13 +3,13 @@ import { BrowserModule } from '@angular/platform-browser';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { HeaderComponent } from './header/header.component';
-import { ListaProdutosComponent } from './lista-produtos/lista-produtos.component';
-import { LoginComponent } from './login/login.component';
+import { HeaderComponent } from './components/header/header.component';
+import { ListaProdutosComponent } from './components/lista-produtos/lista-produtos.component';
+import { LoginComponent } from './components/login/login.component';
 import { Router, RouterModule } from '@angular/router';
-import { GestaoComponent } from './gestao/gestao.component';
-import { PainelProdutosComponent } from './painel-produtos/painel-produtos.component';
-import { TopBarComponent } from './top-bar/top-bar.component';
+import { GestaoComponent } from './components/gestao/gestao.component';
+import { PainelProdutosComponent } from './components/painel-produtos/painel-produtos.component';
+import { TopBarComponent } from './components/top-bar/top-bar.component';
 
 
 @NgModule({

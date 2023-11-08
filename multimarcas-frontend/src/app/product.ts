@@ -6,10 +6,9 @@ export interface Produto {
 }
 
 export const produtos: Produto[] = [
-    { nome: 'Alforra', url: 'https://static3.tcdn.com.br/img/img_prod/460977/teste_100485_1_cbc226c7d23a19c784fb4752ffe61337.png', valor: 15, quantidade: 1 },
-    { nome: 'Bendict', url: '1', valor: 18, quantidade: 1 },
-    { nome: 'Foriote', url: 'https://img.freepik.com/fotos-gratis/um-passaro-com-a-palavra-aguia-nas-asas_1340-33393.jpg?size=626&ext=jpg&ga=GA1.1.1826414947.1699228800&semt=sph', valor: 11, quantidade: 1 },
-    { nome: 'Alforra', url: 'https://static3.tcdn.com.br/img/img_prod/460977/teste_100485_1_cbc226c7d23a19c784fb4752ffe61337.png', valor: 15, quantidade: 1 },
-
-    { nome: 'Dedl', url: 'https://static3.tcdn.com.br/img/img_prod/460977/teste_100485_1_cbc226c7d23a19c784fb4752ffe61337.png', valor: 15, quantidade: 1 },
+    { nome: 'Heineken', url: 'https://cdn.awsli.com.br/2500x2500/2371/2371659/produto/169355378/304ad436dd.jpg', valor: 15, quantidade: 1 },
+    { nome: 'Eisenbahn', url: 'https://www.imigrantesbebidas.com.br/img/bebida/images/products/full/403-cerveja-eisenbahn-pilsen-long-neck-355-ml.jpg?s=7087598ea4f819385fe6e4e3509265f8', valor: 18, quantidade: 1 },
+    { nome: 'Coca Cola', url: 'https://thepetitpizzaria.com.br/gramado/wp-content/uploads/2021/06/Pet-2-Litros-Coca-Cola-PNG.png', valor: 11, quantidade: 1 },
+    { nome: 'Heineken', url: 'https://cdn.awsli.com.br/2500x2500/2371/2371659/produto/169355378/304ad436dd.jpg', valor: 15, quantidade: 1 },
+    { nome: 'Eisenbahn', url: 'https://www.imigrantesbebidas.com.br/img/bebida/images/products/full/403-cerveja-eisenbahn-pilsen-long-neck-355-ml.jpg?s=7087598ea4f819385fe6e4e3509265f8', valor: 18, quantidade: 1 },
 ]
