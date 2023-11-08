@@ -10,13 +10,11 @@ import { CarrinhoService } from '../../carrinho.service';
 export class ListaProdutosComponent {
   produtos = [...produtos]
   lista = produtos;
-  onFiltrarProduto(texto: any) {
+  onFiltrarProduto(texto: string) {
     if (!texto) {
       this.lista = produtos;
     } else {
-      console.log(texto)
-      this.lista = produtos.filter(produto => !produto.nome.search(texto))
-      console.log(this.lista)
+      this.lista = produtos.filter(produto => !produto.nome.toLowerCase().search(texto.toLowerCase()))
     }
 
   }
