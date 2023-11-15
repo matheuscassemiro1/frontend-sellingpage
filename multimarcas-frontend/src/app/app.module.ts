@@ -10,17 +10,20 @@ import { Router, RouterModule } from '@angular/router';
 import { GestaoComponent } from './components/gestao/gestao.component';
 import { PainelProdutosComponent } from './components/painel-produtos/painel-produtos.component';
 import { TopBarComponent } from './components/top-bar/top-bar.component';
+import { ReactiveFormsModule, FormsModule, FormGroup } from '@angular/forms';
 
 
 @NgModule({
   imports: [
     BrowserModule,
     AppRoutingModule,
+    ReactiveFormsModule,
+    FormsModule,
     RouterModule.forRoot([
       { path: '', component: ListaProdutosComponent },
       { path: 'login', component: LoginComponent },
       { path: 'gestao', component: GestaoComponent },
-      { path: 'produtos', component: PainelProdutosComponent}])
+      { path: 'produtos', component: PainelProdutosComponent }])
   ],
   declarations: [
     AppComponent,
@@ -29,7 +32,7 @@ import { TopBarComponent } from './components/top-bar/top-bar.component';
     LoginComponent,
     GestaoComponent,
     PainelProdutosComponent,
-    TopBarComponent
+    TopBarComponent,
   ],
 
   providers: [],
