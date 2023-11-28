@@ -12,15 +12,15 @@ export class LoginService {
     private http: HttpClient) { }
 
   loginUrl: string = 'http://localhost:3001/api/login';
-
+  httpOptions = {
+    headers: new HttpHeaders({
+      'Content-Type': 'application/json',
+      'Access-Control-Allow-Origin': '*',
+      "Access-Control-Allow-Headers": "Origin, X-Requested-With, Content-Type, Accept, Authorization, Cookie"
+    })
+  };
   tentarLogin(credenciais: Object): Observable<Object> {
-    const httpOptions = {
-      headers: new HttpHeaders({
-        'Content-Type': 'application/json',
-        'Access-Control-Allow-Origin': '*'
-      })
-    };
-    return this.http.post<Object>(this.loginUrl, JSON.stringify(credenciais), httpOptions);
+    return this.http.post<Object>(this.loginUrl, JSON.stringify(credenciais), this.httpOptions);
   }
 }
 

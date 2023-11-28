@@ -23,7 +23,13 @@ export class LoginComponent {
 
   efetuarLogin() {
     console.log(this.formularioLogin);
-    this.loginService.tentarLogin(this.formularioLogin.value).subscribe((resultado) => (console.log(resultado)))
+    this.loginService.tentarLogin(this.formularioLogin.value).subscribe((resultado) => {
+      if (Object.values(resultado)[0] == "falha"){
+        alert(Object.values(resultado)[1])
+      } else {
+        
+      }
+    })
   }
 
 }
