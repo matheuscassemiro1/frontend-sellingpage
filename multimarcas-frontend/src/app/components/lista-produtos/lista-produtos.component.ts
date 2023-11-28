@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Produto, produtos } from '../../product'
 import { CarrinhoService } from '../../carrinho.service';
+import { ProdutosService } from 'src/app/services/produtos.service';
 
 @Component({
   selector: 'app-lista-produtos',
@@ -9,6 +10,7 @@ import { CarrinhoService } from '../../carrinho.service';
 })
 export class ListaProdutosComponent {
   produtos = [...produtos]
+
   lista = produtos;
   onFiltrarProduto(texto: string) {
     if (!texto) {
@@ -19,11 +21,16 @@ export class ListaProdutosComponent {
 
   }
   constructor(
+    private produtosService: ProdutosService,
     private carrinhoService: CarrinhoService
   ) { }
 
+  listarProdutos(): void {
+    this.produtosService.getAll().subscribe((coisas) => (console.log(coisas)))
+  }
   adicionarAoCarrinho(produto: Produto) {
     this.carrinhoService.adicionarAoCarrinho(produto)
+    this.listarProdutos()
     //window.alert(`O ${produto.nome} foi adicionado ao seu carrinho!`)
   }
 

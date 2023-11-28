@@ -11,6 +11,7 @@ import { GestaoComponent } from './components/gestao/gestao.component';
 import { PainelProdutosComponent } from './components/painel-produtos/painel-produtos.component';
 import { TopBarComponent } from './components/top-bar/top-bar.component';
 import { ReactiveFormsModule, FormsModule, FormGroup } from '@angular/forms';
+import { HttpClientModule } from '@angular/common/http';
 
 
 @NgModule({
@@ -19,6 +20,7 @@ import { ReactiveFormsModule, FormsModule, FormGroup } from '@angular/forms';
     AppRoutingModule,
     ReactiveFormsModule,
     FormsModule,
+    HttpClientModule,
     RouterModule.forRoot([
       { path: '', component: ListaProdutosComponent },
       { path: 'login', component: LoginComponent },
