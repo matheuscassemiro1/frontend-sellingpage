@@ -27,25 +27,25 @@ export class AuthService {
   }
 
 
-/*
-  validarToken(): boolean {
-    const token = this.obterToken();
-
-    if (token) {
-      try {
-        const decodedToken: any = jwt_decode(token);
-
-        // Verifica se o token não expirou
-        const tokenExpirado = Date.now() >= decodedToken.exp * 1000;
-        return !tokenExpirado;
-      } catch (error) {
-        console.error('Erro ao decodificar o token:', error);
-        return false;
+  /*
+    validarToken(): boolean {
+      const token = this.obterToken();
+  
+      if (token) {
+        try {
+          const decodedToken: any = jwt_decode(token);
+  
+          // Verifica se o token não expirou
+          const tokenExpirado = Date.now() >= decodedToken.exp * 1000;
+          return !tokenExpirado;
+        } catch (error) {
+          console.error('Erro ao decodificar o token:', error);
+          return false;
+        }
       }
-    }
-
-    return false; // Retorna falso se não houver token
-  }*/
+  
+      return false; // Retorna falso se não houver token
+    }*/
 
   loginUrl: string = 'http://localhost:3001/api/login';
 
@@ -53,12 +53,33 @@ export class AuthService {
     headers: new HttpHeaders({
       'Content-Type': 'application/json',
       'Access-Control-Allow-Origin': '*',
-      "Access-Control-Allow-Headers": "Origin, X-Requested-With, Content-Type, Accept, Authorization, Cookie"
+      "Access-Control-Allow-Headers": "Origin, X-Requested-With, Content-Type, Accept, Authorization, Cookie",
     })
   };
 
-  validarAutenticacao(token: string): Observable<any> {
-    return this.http.post<any>(`http://localhost:3001/api/auth`, { token }, this.httpOptions);
+  validarAutenticacao(token: string | null): Observable<Resultado> {
+    if (token === null) {
+      let httpOptionsValidar = {
+        headers: new HttpHeaders({
+          'Content-Type': 'application/json',
+          'Access-Control-Allow-Origin': '*',
+          "Access-Control-Allow-Headers": "Origin, X-Requested-With, Content-Type, Accept, Authorization, Cookie",
+        })
+      };
+      return this.http.get<Resultado>(`http://localhost:3001/api/auth`, httpOptionsValidar)
+
+    } else {
+      let httpOptionsValidar = {
+        headers: new HttpHeaders({
+          'Content-Type': 'application/json',
+          'Access-Control-Allow-Origin': '*',
+          "Access-Control-Allow-Headers": "Origin, X-Requested-With, Content-Type, Accept, Authorization, Cookie",
+          "Authorization": token
+        })
+      };
+      return this.http.get<Resultado>(`http://localhost:3001/api/auth`, httpOptionsValidar)
+    }
+
   }
 
   tentarLogin(credenciais: Object): Observable<Resultado> {
