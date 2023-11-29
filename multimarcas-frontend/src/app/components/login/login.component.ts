@@ -3,7 +3,7 @@ import { FormGroup, FormControl } from '@angular/forms';
 import { Inject } from '@angular/core';
 import { DOCUMENT } from '@angular/common'
 import { Validators } from '@angular/forms';
-import { LoginService } from 'src/app/services/login.service';
+import { AuthService } from 'src/app/services/auth.service';
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
@@ -12,8 +12,8 @@ import { LoginService } from 'src/app/services/login.service';
 export class LoginComponent {
   constructor(
     @Inject(DOCUMENT) document: Document,
-    private loginService: LoginService
-    ) {
+    private authService: AuthService
+  ) {
   }
 
   formularioLogin = new FormGroup({
@@ -22,12 +22,18 @@ export class LoginComponent {
   })
 
   efetuarLogin() {
+    interface Resultado {
+      status: string,
+      mensagem: string
+    }
     console.log(this.formularioLogin);
-    this.loginService.tentarLogin(this.formularioLogin.value).subscribe((resultado) => {
-      if (Object.values(resultado)[0] == "falha"){
-        alert(Object.values(resultado)[1])
+    this.authService.tentarLogin(this.formularioLogin.value).subscribe((resultado) => {
+
+      if (resultado.status == "falha") {
+        alert(resultado.mensagem)
       } else {
-        
+        this.authService.salvarToken(resultado.mensagem);
+        location.href = 'gestao';
       }
     })
   }

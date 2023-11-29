@@ -12,6 +12,8 @@ import { PainelProdutosComponent } from './components/painel-produtos/painel-pro
 import { TopBarComponent } from './components/top-bar/top-bar.component';
 import { ReactiveFormsModule, FormsModule, FormGroup } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
+import { authGuard } from './guard/auth.guard'
+import { AuthService } from './services/auth.service';
 
 
 @NgModule({
@@ -24,8 +26,8 @@ import { HttpClientModule } from '@angular/common/http';
     RouterModule.forRoot([
       { path: '', component: ListaProdutosComponent },
       { path: 'login', component: LoginComponent },
-      { path: 'gestao', component: GestaoComponent },
-      { path: 'produtos', component: PainelProdutosComponent }])
+      { path: 'gestao', component: GestaoComponent, canActivate: [authGuard] },
+      { path: 'produtos', component: PainelProdutosComponent, canActivate: [authGuard]  }])
   ],
   declarations: [
     AppComponent,
