@@ -3,15 +3,20 @@ import { Inject } from '@angular/core';
 import { Input } from '@angular/core';
 import { DOCUMENT } from '@angular/common'
 import { FormGroup, FormControl} from '@angular/forms';
+import { PainelProdutosService } from 'src/app/services/painel-produtos.service';
+import { FormularioProdutoNovo } from 'src/app/services/painel-produtos.service';
 
 @Component({
   selector: 'app-painel-produtos',
   templateUrl: './painel-produtos.component.html',
   styleUrls: ['./painel-produtos.component.css']
 })
+
 export class PainelProdutosComponent {
   constructor(
-    @Inject(DOCUMENT) document: Document) {
+    @Inject(DOCUMENT) document: Document,
+    private painelProdutosService: PainelProdutosService,
+    ) {
   }
 
   formularioProduto = new FormGroup({
@@ -26,8 +31,20 @@ export class PainelProdutosComponent {
     // TODO: Use EventEmitter with form value
     console.warn(this.formularioProduto.value);
     if(this.formularioProduto.value.categoria === 'default'){
+     
       alert('Selecione uma categoria!')
+    } else {
+      let formPost: FormularioProdutoNovo = {
+        nomeDoProduto: this.formularioProduto.value.nomeDoProduto!,
+        precoDoProduto: this.formularioProduto.value.precoDoProduto!,
+        categoria: this.formularioProduto.value.categoria!,
+        arquivo: this.formularioProduto.value.arquivo!,
+      }
+      this.painelProdutosService.cadastrarProduto(formPost).subscribe((resultado) => {
+        console.log(resultado)
+      })
     }
+    
    
   }
 

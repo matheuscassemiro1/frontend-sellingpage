@@ -14,6 +14,7 @@ import { ReactiveFormsModule, FormsModule, FormGroup } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { authGuard } from './guard/auth.guard'
 import { AuthService } from './services/auth.service';
+import { PainelProdutosService } from './services/painel-produtos.service';
 
 
 @NgModule({

@@ -26,7 +26,6 @@ export class LoginComponent {
       status: string,
       mensagem: string
     }
-    console.log(this.formularioLogin);
     this.authService.tentarLogin(this.formularioLogin.value).subscribe((resultado) => {
 
       if (resultado.status == "falha") {

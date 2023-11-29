@@ -8,7 +8,6 @@ export const authGuard: CanActivateFn = (route: ActivatedRouteSnapshot, state: R
   // Lógica de autenticação, por exemplo, verificar se o usuário está logado
   const token: string | null = inject(AuthService).obterToken()
   const isAuthenticated = inject(AuthService).validarAutenticacao(token).subscribe((resultado) => {
-    console.log(resultado)
     if (resultado.status == "sucesso") {
       return true;
     } else {

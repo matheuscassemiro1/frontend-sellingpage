@@ -3,9 +3,11 @@ import { HttpClientModule } from '@angular/common/http';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { Produto } from '../product';
+
 @Injectable({
   providedIn: 'root'
 })
+
 export class ProdutosService {
 
   constructor(private http: HttpClient) { }
