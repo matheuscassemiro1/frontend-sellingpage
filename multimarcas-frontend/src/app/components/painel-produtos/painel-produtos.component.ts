@@ -22,23 +22,25 @@ export class PainelProdutosComponent {
   formularioProduto = new FormGroup({
     nomeDoProduto: new FormControl(''),
     precoDoProduto: new FormControl(''),
-    categoria: new FormControl('default'),
-    arquivo: new FormControl('')
+    categoria: new FormControl('default')
   })
 
-
+ imagem: any = '';
+  
   onSubmit() {
     // TODO: Use EventEmitter with form value
     console.warn(this.formularioProduto.value);
     if(this.formularioProduto.value.categoria === 'default'){
      
       alert('Selecione uma categoria!')
+    }else if (this.imagem == ""){
+      alert('Selecione uma imagem')
     } else {
       let formPost: FormularioProdutoNovo = {
         nomeDoProduto: this.formularioProduto.value.nomeDoProduto!,
         precoDoProduto: this.formularioProduto.value.precoDoProduto!,
         categoria: this.formularioProduto.value.categoria!,
-        arquivo: this.formularioProduto.value.arquivo!,
+        arquivo: this.imagem.target.files[0],
       }
       this.painelProdutosService.cadastrarProduto(formPost).subscribe((resultado) => {
         console.log(resultado)

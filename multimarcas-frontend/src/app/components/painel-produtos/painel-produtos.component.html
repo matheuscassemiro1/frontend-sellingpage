@@ -61,7 +61,7 @@
                             </div>
                             <div class="mb-3">
                                 <label for="arquivo" class="form-label"><b>Imagem</b></label>
-                                <input formControlName="arquivo" class="form-control" type="file" accept="image/*"
+                                <input (change)="[imagem=$event]" formControlName="arquivo" class="form-control" type="file" accept="image/*"
                                     required>
                             </div>
                             <button type="submit" class="btn btn-success w-100">Cadastrar</button>
