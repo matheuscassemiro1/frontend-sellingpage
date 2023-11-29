@@ -2,9 +2,11 @@ import { Component } from '@angular/core';
 import { Inject } from '@angular/core';
 import { Input } from '@angular/core';
 import { DOCUMENT } from '@angular/common'
-import { FormGroup, FormControl} from '@angular/forms';
+import { FormGroup, FormControl } from '@angular/forms';
 import { PainelProdutosService } from 'src/app/services/painel-produtos.service';
 import { FormularioProdutoNovo } from 'src/app/services/painel-produtos.service';
+import { ProdutosService } from 'src/app/services/produtos.service';
+import { Produto, produtos } from '../../product'
 
 @Component({
   selector: 'app-painel-produtos',
@@ -16,7 +18,19 @@ export class PainelProdutosComponent {
   constructor(
     @Inject(DOCUMENT) document: Document,
     private painelProdutosService: PainelProdutosService,
-    ) {
+    private produtosService: ProdutosService
+  ) {
+  }
+
+  produtos = [...produtos];
+
+  lista = produtos;
+  filtrarProdutos(texto: string) {
+    if (!texto) {
+      this.lista = produtos;
+    } else {
+      this.lista = produtos.filter(produto => !produto.nome.toLowerCase().search(texto.toLowerCase()))
+    }
   }
 
   formularioProduto = new FormGroup({
@@ -25,15 +39,15 @@ export class PainelProdutosComponent {
     categoria: new FormControl('default')
   })
 
- imagem: any = '';
-  
+  imagem: any = '';
+
   onSubmit() {
     // TODO: Use EventEmitter with form value
     console.warn(this.formularioProduto.value);
-    if(this.formularioProduto.value.categoria === 'default'){
-     
+    if (this.formularioProduto.value.categoria === 'default') {
+
       alert('Selecione uma categoria!')
-    }else if (this.imagem == ""){
+    } else if (this.imagem == "") {
       alert('Selecione uma imagem')
     } else {
       let formPost: FormularioProdutoNovo = {
@@ -44,10 +58,13 @@ export class PainelProdutosComponent {
       }
       this.painelProdutosService.cadastrarProduto(formPost).subscribe((resultado) => {
         console.log(resultado)
+        ////////////////////////////////////
+        /////////////////////////////////////
+        //////PREENCHER COM ALERTA DE PRODUTO CADASTRADO
       })
     }
-    
-   
+
+
   }
 
   abrir() {
