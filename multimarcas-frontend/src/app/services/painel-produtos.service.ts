@@ -43,7 +43,34 @@ export class PainelProdutosService {
     }
   
   }
+
+  excluirProduto(id: number): Observable<Resultado>{
+    let token = this.authService.obterToken()
+    if (token){
+      let options = {
+        headers: new HttpHeaders({
+          'Access-Control-Allow-Origin': '*',
+          "Access-Control-Allow-Headers": "Origin, X-Requested-With, Content-Type, Accept, Authorization, Cookie",
+          "Authorization": token
+        }),
+        body: JSON.stringify({id: id})
+      };
+
+      return this.http.delete<Resultado>(`http://localhost:3001/api/produtos`, options)
+    } else {
+      let options = {
+        headers: new HttpHeaders({
+          'Access-Control-Allow-Origin': '*',
+          "Access-Control-Allow-Headers": "Origin, X-Requested-With, Content-Type, Accept, Authorization, Cookie"
+        }),
+        body: JSON.stringify({id: id})
+      };
+      return this.http.delete<Resultado>(`http://localhost:3001/api/produtos`, options)
+    }
+  }
 }
+
+
 
 export interface FormularioProdutoNovo {
   nomeDoProduto: string,

@@ -57,14 +57,19 @@ export class PainelProdutosComponent {
         arquivo: this.imagem.target.files[0],
       }
       this.painelProdutosService.cadastrarProduto(formPost).subscribe((resultado) => {
-        console.log(resultado)
-        ////////////////////////////////////
-        /////////////////////////////////////
-        //////PREENCHER COM ALERTA DE PRODUTO CADASTRADO
+        if (resultado.status == "sucesso") {
+          alert(`${this.formularioProduto.value.nomeDoProduto!} cadastrado com sucesso.`)
+        } else {
+          alert(resultado.mensagem)
+        }
       })
     }
+  }
 
-
+  excluirProduto(produto: Produto) {
+    if (confirm(`O produto ${produto.nome} será excluido! Tem certeza?`)) {
+      //this.painelProdutosService.excluirProduto(produto.id)
+    }
   }
 
   abrir() {
