@@ -41,9 +41,9 @@ export class PainelProdutosComponent {
 
   imagem: any = '';
 
+  novaImagem: any = '';
+  idAltFoto: any = '';
   onSubmit() {
-    // TODO: Use EventEmitter with form value
-    console.warn(this.formularioProduto.value);
     if (this.formularioProduto.value.categoria === 'default') {
 
       alert('Selecione uma categoria!')
@@ -68,7 +68,7 @@ export class PainelProdutosComponent {
 
   excluirProduto(produto: Produto) {
     if (confirm(`O produto ${produto.nome} será excluido! Tem certeza?`)) {
-      //this.painelProdutosService.excluirProduto(produto.id)
+      this.painelProdutosService.excluirProduto(produto.id).subscribe(resultado => console.warn(resultado))
     }
   }
 
@@ -78,6 +78,28 @@ export class PainelProdutosComponent {
 
   fechar() {
     document.getElementById('modalNovoProduto')?.classList.remove('d-block')
+  }
+
+  modalNovaFoto(produto: Produto) {
+    document.getElementById('idProdutoAltFoto')!.textContent = `#${produto.id} `
+    document.getElementById('produtoNome')!.textContent = produto.nome
+    this.idAltFoto = produto.id
+    document.getElementById('modalAlterarFotoProduto')?.classList.add('d-block')
+    document.getElementById('botaoFechaAlterarFoto')?.addEventListener('click', (e) => {
+      document.getElementById('modalAlterarFotoProduto')?.classList.remove('d-block')
+      this.idAltFoto = '';
+    })
+  }
+
+  alterar() {
+    // TODO: Use EventEmitter with form value
+
+    if (this.novaImagem === '') {
+      alert('Selecione uma imagem')
+    }
+    else {
+      this.painelProdutosService.alterarImagem(this.idAltFoto, this.novaImagem).subscribe(resultado => console.warn(resultado))
+    }
   }
 
 }

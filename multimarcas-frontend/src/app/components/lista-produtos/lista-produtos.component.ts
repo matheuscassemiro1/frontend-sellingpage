@@ -2,7 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { Produto, produtos } from '../../product'
 import { CarrinhoService } from '../../carrinho.service';
 import { ProdutosService } from 'src/app/services/produtos.service';
-
+import { Produte } from 'src/app/services/produtos.service';
+import { Observable } from 'rxjs';
 @Component({
   selector: 'app-lista-produtos',
   templateUrl: './lista-produtos.component.html',
@@ -25,8 +26,14 @@ export class ListaProdutosComponent {
     private carrinhoService: CarrinhoService
   ) { }
 
-  listarProdutos(): void {
-    this.produtosService.getAll().subscribe((coisas) => (console.log(coisas)))
+  listarProdutos() {
+    this.produtosService.getAll().subscribe(coisas => {
+      let teste: Produte[] = []
+      console.log(coisas.mensagem)
+      coisas.mensagem.forEach(e => e)
+      console.log('a')
+      console.log(teste)
+    })
   }
   adicionarAoCarrinho(produto: Produto) {
     this.carrinhoService.adicionarAoCarrinho(produto)
