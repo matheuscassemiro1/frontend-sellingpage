@@ -171,24 +171,6 @@
       </div>
     </div>
 
-    <div class="col-md-3" style="display: block">
-      <div
-        class="card flex-row mb-4 ml-1 px-1 text-center"
-        style="width: 18rem"
-      >
-        <div class="card-body">
-          <h5 class="card-title">Nome Produto</h5>
-          <img src="./../img/brahma.jpg" width="150px" height="150px" alt="" />
-          <h6 class="card-subtitle mb-2 text-muted">Preço</h6>
-          <div style="display: inline-block">
-            <button class="btn btn-warning">Alterar Preço</button>
-            <button class="btn btn-info">Alterar Foto</button>
-            <button class="btn btn-danger">Excluir</button>
-          </div>
-        </div>
-      </div>
-    </div>
-
     <div
       *ngIf="lista.length <= 0; else existemProdutos"
       style="
@@ -200,8 +182,11 @@
     >
       <h2>Não há produtos disponíveis no momento</h2>
     </div>
+
+
+    
     <ng-template #existemProdutos>
-      <div class="row mb-2 mt-1" style="max-width: 99%; margin-left: 0.5vw">
+      <div class="row mb-2" style="max-width: 99%; margin-left: 0.5vw">
         <div>
           <span></span>
         </div>
@@ -229,9 +214,9 @@
               <div style="width: 250px; height: 250px; overflow: hidden">
                 <img
                   class=""
-                  data-src="{{ produto.url }}"
+                  data-src="{{ produto.imagem }}"
                   alt="Thumbnail [200x250]"
-                  src="{{ produto.url }}"
+                  src="http://localhost:3001/img/{{ produto.imagem }}"
                   style="width: 250px; height: 250px; object-fit: contain"
                 />
               </div>
@@ -256,7 +241,7 @@
                     "
                     >R$
                     {{
-                      produto.valor.toFixed(2).toString().replace(".", ",")
+                      produto.preco.toFixed(2).toString().replace(".", ",")
                     }}</span
                   >
                 </div>

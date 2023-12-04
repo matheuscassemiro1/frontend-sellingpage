@@ -1,18 +1,19 @@
 import { Component, OnInit } from '@angular/core';
-import { Produto, produtos } from '../../product'
 import { CarrinhoService } from '../../carrinho.service';
 import { ProdutosService } from 'src/app/services/produtos.service';
-import { Produte } from 'src/app/services/produtos.service';
+import { Produto } from 'src/app/services/produtos.service';
 import { Observable } from 'rxjs';
+
 @Component({
   selector: 'app-lista-produtos',
   templateUrl: './lista-produtos.component.html',
   styleUrls: ['./lista-produtos.component.css']
 })
-export class ListaProdutosComponent {
-  produtos = [...produtos]
 
+
+export class ListaProdutosComponent {
   lista = produtos;
+
   onFiltrarProduto(texto: string) {
     if (!texto) {
       this.lista = produtos;
@@ -23,16 +24,19 @@ export class ListaProdutosComponent {
   }
   constructor(
     private produtosService: ProdutosService,
-    private carrinhoService: CarrinhoService
+    private carrinhoService: CarrinhoService,
   ) { }
-
+  
+  ngOnInit() {
+    this.listarProdutos()
+}
   listarProdutos() {
     this.produtosService.getAll().subscribe(coisas => {
-      let teste: Produte[] = []
-      console.log(coisas.mensagem)
-      coisas.mensagem.forEach(e => e)
-      console.log('a')
-      console.log(teste)
+      coisas.mensagem.forEach(e => {
+        e.quantidade = 1;
+        produtos.push(e)
+      })
+      // coisas.mensagem.forEach(e => (console.log(e)))
     })
   }
   adicionarAoCarrinho(produto: Produto) {
@@ -65,9 +69,10 @@ export class ListaProdutosComponent {
       }
     })
     location.href = texto;
-    console.log(texto)
     //https://api.whatsapp.com/send/?phone=5531995633606&text=Ol%C3%A1%20eu%20gostaria%20de%20comprar+%20+b+%20+c
 
   }
 
 }
+
+export const produtos: Produto[] = []

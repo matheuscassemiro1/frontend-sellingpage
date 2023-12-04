@@ -6,7 +6,9 @@ import { FormGroup, FormControl } from '@angular/forms';
 import { PainelProdutosService } from 'src/app/services/painel-produtos.service';
 import { FormularioProdutoNovo } from 'src/app/services/painel-produtos.service';
 import { ProdutosService } from 'src/app/services/produtos.service';
-import { Produto, produtos } from '../../product'
+import { Produto } from 'src/app/services/produtos.service';
+import { produtos } from '../lista-produtos/lista-produtos.component';
+import { ListaProdutosComponent } from '../lista-produtos/lista-produtos.component';
 
 @Component({
   selector: 'app-painel-produtos',
@@ -22,9 +24,22 @@ export class PainelProdutosComponent {
   ) {
   }
 
-  produtos = [...produtos];
+  ngOnInit(){
+    this.listarProdutosPainel()
+  }
 
   lista = produtos;
+
+  listarProdutosPainel() {
+    this.produtosService.getAll().subscribe(coisas => {
+      coisas.mensagem.forEach(e => {
+        e.quantidade = 1;
+        produtos.push(e)
+      })
+      // coisas.mensagem.forEach(e => (console.log(e)))
+    })
+  }
+
   filtrarProdutos(texto: string) {
     if (!texto) {
       this.lista = produtos;
@@ -59,6 +74,7 @@ export class PainelProdutosComponent {
       this.painelProdutosService.cadastrarProduto(formPost).subscribe((resultado) => {
         if (resultado.status == "sucesso") {
           alert(`${this.formularioProduto.value.nomeDoProduto!} cadastrado com sucesso.`)
+          location.reload()
         } else {
           alert(resultado.mensagem)
         }
@@ -68,7 +84,14 @@ export class PainelProdutosComponent {
 
   excluirProduto(produto: Produto) {
     if (confirm(`O produto ${produto.nome} será excluido! Tem certeza?`)) {
-      this.painelProdutosService.excluirProduto(produto.id).subscribe(resultado => console.warn(resultado))
+      this.painelProdutosService.excluirProduto(produto.id).subscribe(resultado => {
+        if (resultado.status == "sucesso"){
+          alert("Produto exclúido com sucesso!")
+          location.reload()
+        } else {
+          alert(resultado.mensagem)
+        }
+      })
     }
   }
 
@@ -93,12 +116,18 @@ export class PainelProdutosComponent {
 
   alterar() {
     // TODO: Use EventEmitter with form value
-
     if (this.novaImagem === '') {
       alert('Selecione uma imagem')
     }
     else {
-      this.painelProdutosService.alterarImagem(this.idAltFoto, this.novaImagem).subscribe(resultado => console.warn(resultado))
+      this.painelProdutosService.alterarImagem(this.idAltFoto, this.novaImagem.target.files[0]).subscribe(resultado => {
+        if(resultado.status == "sucesso"){
+          alert("A imagem do produto foi alterada com sucesso!")
+          location.reload()
+        } else {
+          alert(resultado.mensagem)
+        }
+      })
     }
   }
 

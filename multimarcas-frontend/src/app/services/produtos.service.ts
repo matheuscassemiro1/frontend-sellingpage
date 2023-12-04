@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { Produto } from '../product';
 import { Resultado } from './auth.service';
 @Injectable({
   providedIn: 'root'
@@ -24,13 +23,17 @@ export class ProdutosService {
 
 export interface Retorno {
   status: string,
-  mensagem: []
+  mensagem: [
+    Produto
+  ]
 }
 
-export interface Produte {
+export interface Produto {
   id: number,
   nome: string,
   imagem: string,
   preco: number,
-  quantidade: 1;
+  createdAt: string,
+  updatedAt: string,
+  quantidade: number
 }

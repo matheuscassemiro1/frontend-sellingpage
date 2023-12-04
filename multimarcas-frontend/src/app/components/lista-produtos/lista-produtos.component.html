@@ -7,7 +7,6 @@
 </div>
 
 <ng-template #existemProdutos>
-  <button (click)="listarProdutos()">a</button>
   <div class="row mb-2 mt-1" style="max-width: 99%; margin-left: 0.5vw">
     <div>
       <span></span>
@@ -36,9 +35,9 @@
           <div style="width: 250px; height: 250px; overflow: hidden">
             <img
               class=""
-              data-src="{{ produto.url }}"
+              data-src="{{ produto.imagem }}"
               alt="Thumbnail [200x250]"
-              src="{{ produto.url }}"
+              src="http://localhost:3001/img/{{ produto.imagem }}"
               style="width: 250px; height: 250px; object-fit: contain"
             />
           </div>
@@ -93,7 +92,7 @@
                 "
                 >R$
                 {{
-                  produto.valor.toFixed(2).toString().replace(".", ",")
+                  produto.preco.toFixed(2).toString().replace(".", ",")
                 }}</span
               >
               <button
