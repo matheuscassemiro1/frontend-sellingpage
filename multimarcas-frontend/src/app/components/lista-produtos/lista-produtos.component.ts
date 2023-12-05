@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { CarrinhoService } from '../../carrinho.service';
+import { CarrinhoService } from '../../services/carrinho.service';
 import { ProdutosService } from 'src/app/services/produtos.service';
 import { Produto } from 'src/app/services/produtos.service';
 import { Observable } from 'rxjs';
@@ -41,7 +41,6 @@ export class ListaProdutosComponent {
   }
   adicionarAoCarrinho(produto: Produto) {
     this.carrinhoService.adicionarAoCarrinho(produto)
-    this.listarProdutos()
     //window.alert(`O ${produto.nome} foi adicionado ao seu carrinho!`)
   }
 
