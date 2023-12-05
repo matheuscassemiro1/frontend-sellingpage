@@ -114,6 +114,33 @@ export class PainelProdutosComponent {
     })
   }
 
+
+  formularioNovoPreco = new FormGroup({
+    novoPreco: new FormControl(''),
+  })
+  submitPreco(){
+    const idProduto = document.getElementById('idProdutoAltPreco')!.textContent
+    const novoPreco = this.formularioNovoPreco.value.novoPreco
+    this.painelProdutosService.alterarPrecoProduto(idProduto!, novoPreco!).subscribe(resultado => {
+      if(resultado.status == "sucesso"){
+        alert("O preço do produto foi alterado com sucesso!")
+        location.reload()
+      } else {
+        alert(resultado.mensagem)
+      }
+    })
+  }
+
+  modalNovoPreco(produto: Produto) {
+    document.getElementById('idProdutoAltPreco')!.textContent = `${produto.id}`
+    document.getElementById('produtoNomePreco')!.textContent = ` ${produto.nome}`
+    document.getElementById('modalAlterarPrecoProduto')?.classList.add('d-block')
+    document.getElementById('botaoFechaAlterarPreco')?.addEventListener('click', (e) => {
+      document.getElementById('modalAlterarPrecoProduto')?.classList.remove('d-block')
+      document.getElementById('idProdutoAltPreco')!.textContent = ``
+    })
+  }
+
   alterar() {
     // TODO: Use EventEmitter with form value
     if (this.novaImagem === '') {

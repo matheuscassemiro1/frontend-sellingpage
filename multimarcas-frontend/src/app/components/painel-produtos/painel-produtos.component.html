@@ -43,6 +43,7 @@
       Adicionar novo produto
     </button>
 
+    <!--       CADASTRO  NOVO PRODUTO        -->
     <div
       id="modalNovoProduto"
       class="modal mt-5 pt-3"
@@ -129,6 +130,7 @@
       </div>
     </div>
 
+    <!--ALTERAR FOTO PRODUTO         -->
     <div
       id="modalAlterarFotoProduto"
       class="modal mt-5 pt-3"
@@ -139,7 +141,7 @@
         <div class="modal-content">
           <div class="modal-header">
             <h5 class="modal-title">
-              Alterar foto do produto -> <span id="idProdutoAltFoto"></span>
+              Alterar FOTO do produto -> <span id="idProdutoAltFoto"></span>
               <span id="produtoNome"></span>
             </h5>
             <button
@@ -153,24 +155,85 @@
             </button>
           </div>
           <div class="modal-body">
-              <div class="mb-3">
-                <label for="novaImagem" class="form-label"><b>Nova imagem</b></label>
-                <input
-                  (change)="[(novaImagem = $event)]"
-                  class="form-control"
-                  type="file"
-                  accept="image/*"
-                  required
-                />
-              </div>
-              <button type="submit" class="btn btn-success w-100" (click)="alterar()">
-                Alterar
-              </button>
+            <div class="mb-3">
+              <label for="novaImagem" class="form-label"
+                ><b>Nova imagem</b></label
+              >
+              <input
+                (change)="[(novaImagem = $event)]"
+                class="form-control"
+                type="file"
+                accept="image/*"
+                required
+              />
+            </div>
+            <button
+              type="submit"
+              class="btn btn-success w-100"
+              (click)="alterar()"
+            >
+              Alterar foto
+            </button>
           </div>
         </div>
       </div>
     </div>
 
+    <!--ALTERAR PRECO PRODUTO         -->
+    <div
+      id="modalAlterarPrecoProduto"
+      class="modal mt-5 pt-3"
+      tabindex="-1"
+      role="dialog"
+    >
+      <div class="modal-dialog" role="document">
+        <form
+              [formGroup]="formularioNovoPreco"
+              (ngSubmit)="submitPreco()"
+              ngNativeValidate
+            >
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title">
+              Alterar PREÇO do produto -> #<span id="idProdutoAltPreco"></span>
+              <span id="produtoNomePreco"></span>
+            </h5>
+            <button
+              type="button"
+              id="botaoFechaAlterarPreco"
+              class="btn-close"
+              data-dismiss="modal"
+              aria-label="Close"
+            >
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <div class="mb-3">
+              <label for="novoPrecoProduto" class="form-label"
+                ><b>Novo Preço</b></label
+              >
+              <input
+                id="novoPrecoProduto"
+                type="number"
+                step="0.1"
+                class="form-control"
+                formControlName="novoPreco"
+                placeholder="ex: 12,90"
+                required
+              />
+            </div>
+            <button
+              type="submit"
+              class="btn btn-success w-100"
+            >
+              Alterar preço
+            </button>
+          </div>
+        </div>
+        </form>
+      </div>
+    </div>
     <div
       *ngIf="lista.length <= 0; else existemProdutos"
       style="
@@ -183,8 +246,6 @@
       <h2>Não há produtos disponíveis no momento</h2>
     </div>
 
-
-    
     <ng-template #existemProdutos>
       <div class="row mb-2" style="max-width: 99%; margin-left: 0.5vw">
         <div>
@@ -250,10 +311,15 @@
                 <button
                   class="btn btn-warning"
                   style="width: 40%; margin: 10px"
+                  (click)="modalNovoPreco(produto)"
                 >
                   Alterar Preço
                 </button>
-                <button class="btn btn-info" style="width: 40%; margin: 10px" (click)="modalNovaFoto(produto)">
+                <button
+                  class="btn btn-info"
+                  style="width: 40%; margin: 10px"
+                  (click)="modalNovaFoto(produto)"
+                >
                   Alterar Foto
                 </button>
                 <button

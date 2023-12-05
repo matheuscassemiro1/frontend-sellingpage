@@ -93,6 +93,30 @@ export class PainelProdutosService {
       return this.http.put<Resultado>(`http://localhost:3001/api/produto-foto`, formdata, options)
     }
   }
+
+  alterarPrecoProduto(id: string, novoPreco: string): Observable<Resultado> {
+    let token = this.authService.obterToken()
+    if (token) {
+      let options = {
+        headers: new HttpHeaders({
+          'Access-Control-Allow-Origin': '*',
+          "Access-Control-Allow-Headers": "Origin, X-Requested-With, Content-Type, Accept, Authorization, Cookie",
+          "Authorization": token
+        })
+      };
+
+      return this.http.put<Resultado>(`http://localhost:3001/api/produto`, { id: Number(id), preco: novoPreco }, options)
+    } else {
+      let options = {
+        headers: new HttpHeaders({
+          'Access-Control-Allow-Origin': '*',
+          "Access-Control-Allow-Headers": "Origin, X-Requested-With, Content-Type, Accept, Authorization, Cookie"
+        })
+      };
+      return this.http.put<Resultado>(`http://localhost:3001/api/produto`, { id: Number(id), preco: novoPreco }, options)
+    }
+  }
+
 }
 
 
