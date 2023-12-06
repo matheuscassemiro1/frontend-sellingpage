@@ -1,32 +1,38 @@
 <app-top-bar></app-top-bar>
+
 <body>
     <!--class row-->
-    <div class="m-2" style="display: flex;  justify-content: space-evenly;">
-            <!--class col-sm-->
-        <div class="" style="display: block;">
+    <div class="row m-2" style="display: flex; justify-content: space-evenly;">
+        <!--class col-sm-->
+        <div class="col-sm" style="display: block;">
             <div class="card flex-row mb-4 ml-1 px-1 text-center" style="width: 18rem;">
                 <div class="card-body">
-                    <h5 class="card-title">Produtos {{zap}}</h5>
+                    <h5 class="card-title">Produtos</h5>
                     <h6 class="card-subtitle mb-2 text-muted">Gestão e visualização de produtos</h6>
                     <button class="btn btn-info" routerLink="/produtos">Produtos</button>
                 </div>
             </div>
 
         </div>
-            <!--class col-sm-->
-        <div class="" style="display: block;">
-            <div class="card col flex-row mb-4 ml-1 px-2 text-center" style="width: 18rem;">
+        <!--class col-sm-->
+        <div class="col-sm" style="display: block;">
+            <div class="card flex-row mb-4 ml-1 px-2 text-center" style="width: 18rem;">
                 <div class="card-body">
-                    <h5 class="card-title">Whatsapp</h5>
-                    <h6 class="card-subtitle mb-2 text-muted">Visualizar e alterar número de redirecionamento ao Whatsapp</h6>
-                    <button class="btn btn-success">Ver</button>
+                    <h5 class="card-title">Whatsapp para Redirecionar Pedidos</h5>
+                    <h6 class="card-subtitle mb-2 text-muted">Número: <b>{{whatsapp}}</b></h6>
+                    <div *ngIf="whatsapp == 'N/A' else existeNumero">
+                        <button class="btn btn-success m-2" (click)="cadastrarNovoWhatsapp()">Criar</button>
+                    </div>
+                    <ng-template #existeNumero>
+                        <button class="btn btn-warning m-2" (click)="alterarNumeroWhatsapp()">Alterar</button>
+                    </ng-template>
+
                 </div>
             </div>
         </div>
     </div>
-    <div id="conteudo" class="d-inline-block row mb-2 mt-1 py-2 ml-1 px-5">
-        
 
-    </div>
+
+
 
 </body>
