@@ -41,13 +41,15 @@ export class ListaProdutosComponent {
 
   }
   listarProdutos() {
-    this.produtosService.getAll().subscribe(coisas => {
-      coisas.mensagem.forEach(e => {
-        e.quantidade = 1;
-        produtos.push(e)
+    if (this.lista.length == 0) {
+      this.produtosService.getAll().subscribe(coisas => {
+        coisas.mensagem.forEach(e => {
+          e.quantidade = 1;
+          produtos.push(e)
+        })
+        // coisas.mensagem.forEach(e => (console.log(e)))
       })
-      // coisas.mensagem.forEach(e => (console.log(e)))
-    })
+    }
   }
   adicionarAoCarrinho(produto: Produto) {
     this.carrinhoService.adicionarAoCarrinho(produto)
@@ -71,7 +73,7 @@ export class ListaProdutosComponent {
     carrinho.forEach((elemento, index) => {
       if (index == carrinho.length - 1) {
         texto += `%20+%20+e%20${elemento.quantidade}%20${elemento.nome}.`
-      } 
+      }
       else {
         texto += `%20+${elemento.quantidade}%20${elemento.nome},`
       }

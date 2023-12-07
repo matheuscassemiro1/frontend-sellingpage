@@ -31,13 +31,15 @@ export class PainelProdutosComponent {
   lista = produtos;
 
   listarProdutosPainel() {
-    this.produtosService.getAll().subscribe(coisas => {
-      coisas.mensagem.forEach(e => {
-        e.quantidade = 1;
-        produtos.push(e)
+    if (this.lista.length == 0){
+      this.produtosService.getAll().subscribe(coisas => {
+        coisas.mensagem.forEach(e => {
+          e.quantidade = 1;
+          produtos.push(e)
+        })
+        // coisas.mensagem.forEach(e => (console.log(e)))
       })
-      // coisas.mensagem.forEach(e => (console.log(e)))
-    })
+    }
   }
 
   filtrarProdutos(texto: string) {

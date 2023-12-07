@@ -1,5 +1,6 @@
 <app-header (filtrarProduto)="onFiltrarProduto($event)"></app-header>
-<div *ngIf="lista.length <= 0; else existemProdutos"
+<body>
+  <div *ngIf="lista.length <= 0; else existemProdutos"
   style="display: flex; flex: 1; align-items: center; justify-content: center">
   <h2>Não há produtos disponíveis no momento</h2>
 </div>
@@ -85,5 +86,7 @@
         FINALIZAR COMPRA
       </button>
     </div>
+
   </div>
 </ng-template>
+</body>
