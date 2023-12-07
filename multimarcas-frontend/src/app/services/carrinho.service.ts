@@ -4,10 +4,11 @@ import { Produto } from './produtos.service';
   providedIn: 'root'
 })
 export class CarrinhoService {
-  carrinho: Produto[] = [];
+  carrinho: Item[] = [];
 
   adicionarAoCarrinho(produto: Produto){
-    this.carrinho.push(produto);
+    this.carrinho.push({nome: produto.nome, quantidade: produto.quantidade});
+    console.log(this.carrinho)
   }
 
   listarCarrinho(){
@@ -20,4 +21,9 @@ export class CarrinhoService {
   }
 
   constructor() { }
+}
+
+export interface Item{
+  nome: string,
+  quantidade: number
 }

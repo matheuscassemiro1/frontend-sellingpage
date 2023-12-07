@@ -3,7 +3,7 @@ import { CarrinhoService } from '../../services/carrinho.service';
 import { ProdutosService } from 'src/app/services/produtos.service';
 import { Produto } from 'src/app/services/produtos.service';
 import { Observable } from 'rxjs';
-
+import { GestaoService } from 'src/app/services/gestao.service';
 @Component({
   selector: 'app-lista-produtos',
   templateUrl: './lista-produtos.component.html',
@@ -25,11 +25,21 @@ export class ListaProdutosComponent {
   constructor(
     private produtosService: ProdutosService,
     private carrinhoService: CarrinhoService,
+    private gestaoService: GestaoService
   ) { }
-  
+  telefoneWhatsapp: string = '';
   ngOnInit() {
     this.listarProdutos()
-}
+
+    this.gestaoService.buscarWhatsapp().subscribe(retorno => {
+      if (retorno.status == "sucesso") {
+        this.telefoneWhatsapp = retorno.mensagem
+      } else {
+        this.telefoneWhatsapp = 'N/A';
+      }
+    })
+
+  }
   listarProdutos() {
     this.produtosService.getAll().subscribe(coisas => {
       coisas.mensagem.forEach(e => {
@@ -56,14 +66,13 @@ export class ListaProdutosComponent {
 
 
   fecharCarrinho() {
-    window.alert("redirecionado")
-    let texto = 'https://api.whatsapp.com/send/?phone=5531995633606&text=Ol%C3%A1%20eu%20quero%20comprar+%20+'
+    let texto = `https://api.whatsapp.com/send/?phone=55${this.telefoneWhatsapp}&text=Ol%C3%A1%20eu%20quero%20comprar+%20+`
     let carrinho = this.carrinhoService.listarCarrinho()
-    console.log(carrinho)
     carrinho.forEach((elemento, index) => {
       if (index == carrinho.length - 1) {
-        texto += `%20+%20+${elemento.quantidade}%20${elemento.nome}.`
-      } else {
+        texto += `%20+%20+e%20${elemento.quantidade}%20${elemento.nome}.`
+      } 
+      else {
         texto += `%20+${elemento.quantidade}%20${elemento.nome},`
       }
     })
