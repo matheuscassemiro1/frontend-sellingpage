@@ -1,1 +1,7 @@
 /* You can add global styles to this file, and also import other style files */
+.powered{
+    margin-left: 1%;
+    font-size: smaller;
+    color: gray;
+    margin-bottom: -10px;
+}
