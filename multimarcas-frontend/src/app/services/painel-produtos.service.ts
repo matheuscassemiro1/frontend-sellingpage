@@ -17,7 +17,9 @@ export class PainelProdutosService {
   cadastrarProduto(formulario: FormularioProdutoNovo): Observable<Resultado> {
     let token = this.authService.obterToken()
     const formdata = new FormData()
-    formdata.append('imagem', formulario.arquivo)
+    if(formulario.arquivo){
+      formdata.append('imagem', formulario.arquivo)
+    }
     formdata.append('nome', formulario.nomeDoProduto)
     formdata.append('preco', formulario.precoDoProduto)
     formdata.append('categoria', formulario.categoria)
@@ -125,5 +127,5 @@ export interface FormularioProdutoNovo {
   nomeDoProduto: string,
   precoDoProduto: string,
   categoria: string,
-  arquivo: string
+  arquivo?: string
 }

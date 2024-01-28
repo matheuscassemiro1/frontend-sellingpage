@@ -24,12 +24,11 @@ export class GestaoComponent {
 
   cadastrarNovoWhatsapp(){
     if(confirm('Deseja criar o número de redirecionamento?')){
-      let telefone = prompt("Insira o novo telefone: ")
-      if (telefone == ''){
+      let telefone = prompt("Insira o novo telefone: Ex: 27999552202")
+      if (telefone == '' || telefone == null){
         alert("O número não pode estar em branco.")
       } else {
         this.gestaoService.criarNumeroWhatsapp(telefone!).subscribe(retorno => {
-          console.log(retorno)
           if (retorno.status == "sucesso"){
             alert("Número cadastrado.")
             location.reload()
@@ -43,12 +42,11 @@ export class GestaoComponent {
 
   alterarNumeroWhatsapp(){
     if(confirm('Deseja alterar o número de redirecionamento?')){
-      let telefone = prompt("Insira o novo telefone: ")
-      if (telefone == ''){
+      let telefone = prompt("Insira o novo telefone: Ex: 27999552202")
+      if (telefone == '' || telefone == null){
         alert("O número não pode estar em branco.")
       } else {
         this.gestaoService.alterarNumeroWhatsapp(telefone!).subscribe(retorno => {
-          console.log(retorno)
           if (retorno.status == "sucesso"){
             alert("Número alterado.")
             location.reload()

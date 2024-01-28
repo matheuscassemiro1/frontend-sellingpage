@@ -34,6 +34,7 @@ export class PainelProdutosComponent {
     if (this.lista.length == 0){
       this.produtosService.getAll().subscribe(coisas => {
         coisas.mensagem.forEach(e => {
+          console.log(e.imagem)
           e.quantidade = 1;
           produtos.push(e)
         })
@@ -62,16 +63,13 @@ export class PainelProdutosComponent {
   idAltFoto: any = '';
   onSubmit() {
     if (this.formularioProduto.value.categoria === 'default') {
-
       alert('Selecione uma categoria!')
-    } else if (this.imagem == "") {
-      alert('Selecione uma imagem')
     } else {
       let formPost: FormularioProdutoNovo = {
         nomeDoProduto: this.formularioProduto.value.nomeDoProduto!,
         precoDoProduto: this.formularioProduto.value.precoDoProduto!,
         categoria: this.formularioProduto.value.categoria!,
-        arquivo: this.imagem.target.files[0],
+        arquivo: this.imagem.target?.files?.[0],
       }
       this.painelProdutosService.cadastrarProduto(formPost).subscribe((resultado) => {
         if (resultado.status == "sucesso") {
