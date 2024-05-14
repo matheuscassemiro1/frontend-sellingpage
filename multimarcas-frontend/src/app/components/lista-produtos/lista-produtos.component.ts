@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { CarrinhoService } from '../../services/carrinho.service';
-import { ProdutosService } from 'src/app/services/produtos.service';
+import { Categoria, ProdutosService } from 'src/app/services/produtos.service';
 import { Produto } from 'src/app/services/produtos.service';
 import { Observable } from 'rxjs';
 import { GestaoService } from 'src/app/services/gestao.service';
@@ -13,10 +13,11 @@ import { GestaoService } from 'src/app/services/gestao.service';
 
 export class ListaProdutosComponent {
   lista = produtos;
-
+  categorias: Categoria[] | undefined
   onFiltrarProduto(texto: string) {
     if (!texto) {
       this.lista = produtos;
+      window.scrollY
     } else {
       this.lista = produtos.filter(produto => !produto.nome.toLowerCase().search(texto.toLowerCase()))
     }
@@ -30,7 +31,7 @@ export class ListaProdutosComponent {
   telefoneWhatsapp: string = '';
   ngOnInit() {
     this.listarProdutos()
-
+    this.listarCategorias()
     this.gestaoService.buscarWhatsapp().subscribe(retorno => {
       if (retorno.status == "sucesso") {
         this.telefoneWhatsapp = retorno.mensagem
@@ -39,6 +40,13 @@ export class ListaProdutosComponent {
       }
     })
 
+  }
+  listarCategorias() {
+    this.produtosService.getCategorias().subscribe(resposta => {
+      if (resposta.status == 'sucesso') {
+        this.categorias = resposta.mensagem
+      }
+    })
   }
   listarProdutos() {
     if (this.lista.length == 0) {

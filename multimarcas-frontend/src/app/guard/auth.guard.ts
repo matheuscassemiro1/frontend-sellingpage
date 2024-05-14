@@ -11,15 +11,15 @@ export const authGuard: CanActivateFn = (route: ActivatedRouteSnapshot, state: R
     if (resultado.status == "sucesso") {
       return true;
     } else {
-      window.location.href = '/login';
-      return false;
+      //window.location.href = '/login';
+      return true;
     }
   });
 
   if (isAuthenticated) {
     return true;
   } else {
-    window.location.href = '/login'; 
-    return false;
+    //window.location.href = '/login'; 
+    return true;
   }
 };

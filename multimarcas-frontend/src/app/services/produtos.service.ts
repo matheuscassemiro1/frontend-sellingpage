@@ -19,12 +19,30 @@ export class ProdutosService {
     }
     return this.http.get<Retorno>('http://localhost:3001/api/produtos', options);
   }
+
+  getCategorias(): Observable<RetornoCategorias> {
+    let options = {
+      headers: new HttpHeaders({
+        'Access-Control-Allow-Origin': '*',
+        "Access-Control-Allow-Headers": "Origin, X-Requested-With, Content-Type, Accept, Authorization, Cookie"
+      })
+    }
+    return this.http.get<RetornoCategorias>('http://localhost:3001/api/categorias', options);
+  }
+
 }
 
 export interface Retorno {
   status: string,
   mensagem: [
     Produto
+  ]
+}
+
+export interface RetornoCategorias {
+  status: string,
+  mensagem: [
+    Categoria
   ]
 }
 
@@ -36,4 +54,9 @@ export interface Produto {
   createdAt: string,
   updatedAt: string,
   quantidade: number
+}
+
+export interface Categoria {
+  id: number,
+  categoria: string
 }

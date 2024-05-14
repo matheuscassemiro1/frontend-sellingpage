@@ -154,8 +154,8 @@
                   }}</span>
               </h3>
               <div style="width: 250px; height: 250px; overflow: hidden">
-                <img class="" data-src="{{ produto.imagem }}" alt="Thumbnail [200x250]"
-                  [src]="produto.imagem != null ? 'http://localhost:3001/img/' + produto.imagem : 'assets/multimarcas.png'"
+                <img data-src="{{ produto.imagem }}" alt="Thumbnail [200x250]"
+                  [src]="produto.imagem != '' ? 'http://localhost:3001/img/' + produto.imagem : 'assets/multimarcas.png'"
                   style="width: 250px; height: 250px; object-fit: contain" />
               </div>
               <div class="card-body d-grid" style="align-items: end">
