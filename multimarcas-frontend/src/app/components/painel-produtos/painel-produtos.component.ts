@@ -5,7 +5,7 @@ import { DOCUMENT } from '@angular/common'
 import { FormGroup, FormControl } from '@angular/forms';
 import { PainelProdutosService } from 'src/app/services/painel-produtos.service';
 import { FormularioProdutoNovo } from 'src/app/services/painel-produtos.service';
-import { ProdutosService } from 'src/app/services/produtos.service';
+import { Categoria, ProdutosService } from 'src/app/services/produtos.service';
 import { Produto } from 'src/app/services/produtos.service';
 import { produtos } from '../lista-produtos/lista-produtos.component';
 import { ListaProdutosComponent } from '../lista-produtos/lista-produtos.component';
@@ -27,7 +27,7 @@ export class PainelProdutosComponent {
   ngOnInit(){
     this.listarProdutosPainel()
   }
-
+  categorias: Categoria[] = []
   lista = produtos;
 
   listarProdutosPainel() {
@@ -96,6 +96,11 @@ export class PainelProdutosComponent {
   }
 
   abrir() {
+    this.produtosService.getCategorias().subscribe(e => {
+      if (e.status == 'sucesso'){
+        this.categorias = e.mensagem
+      }
+    })
     document.getElementById('modalNovoProduto')?.classList.add('d-block')
   }
 

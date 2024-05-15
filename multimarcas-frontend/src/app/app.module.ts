@@ -15,7 +15,8 @@ import { HttpClientModule } from '@angular/common/http';
 import { authGuard } from './guard/auth.guard'
 import { AuthService } from './services/auth.service';
 import { PainelProdutosService } from './services/painel-produtos.service';
-
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { CategoriasComponent } from './components/modals/categorias/categorias.component';
 
 @NgModule({
   imports: [
@@ -28,7 +29,8 @@ import { PainelProdutosService } from './services/painel-produtos.service';
       { path: '', component: ListaProdutosComponent },
       { path: 'login', component: LoginComponent },
       { path: 'gestao', component: GestaoComponent, canActivate: [authGuard] },
-      { path: 'produtos', component: PainelProdutosComponent, canActivate: [authGuard]  }])
+      { path: 'produtos', component: PainelProdutosComponent, canActivate: [authGuard]  }]),
+    BrowserAnimationsModule
   ],
   declarations: [
     AppComponent,
@@ -38,6 +40,7 @@ import { PainelProdutosService } from './services/painel-produtos.service';
     GestaoComponent,
     PainelProdutosComponent,
     TopBarComponent,
+    CategoriasComponent,
   ],
 
   providers: [],

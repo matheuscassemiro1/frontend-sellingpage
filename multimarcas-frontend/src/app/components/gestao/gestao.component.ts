@@ -11,6 +11,13 @@ export class GestaoComponent {
   ) {
 
   }
+  abrirModalCategorias(){
+    this.modalCategorias = true;
+  }
+  fecharModalCategorias(){
+    this.modalCategorias = false;
+  }
+  modalCategorias = false;
   whatsapp: string = '';
   ngOnInit(){
     this.gestaoService.buscarWhatsapp().subscribe(retorno => {
