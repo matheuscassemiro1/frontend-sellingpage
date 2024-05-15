@@ -7,8 +7,12 @@ export class CarrinhoService {
   carrinho: Item[] = [];
 
   adicionarAoCarrinho(produto: Produto){
-    this.carrinho.push({nome: produto.nome, quantidade: produto.quantidade});
-    console.log(this.carrinho)
+    const testeIndexProduto = this.carrinho.findIndex(armazenado => armazenado.nome == produto.nome)
+    if(testeIndexProduto >= 0){
+      this.carrinho[testeIndexProduto].quantidade += produto.quantidade
+    } else {
+      this.carrinho.push({nome: produto.nome, quantidade: produto.quantidade});
+    }
   }
 
   listarCarrinho(){

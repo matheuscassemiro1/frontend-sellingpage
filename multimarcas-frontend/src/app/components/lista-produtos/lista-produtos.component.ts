@@ -12,8 +12,11 @@ import { GestaoService } from 'src/app/services/gestao.service';
 
 
 export class ListaProdutosComponent {
-  lista = produtos;
+  lista: Produto[] = produtos;
   categorias: Categoria[] | undefined
+  carregando = false;
+  pagina = 1;
+  hasMore = true;
   onFiltrarProduto(texto: string) {
     if (!texto) {
       this.lista = produtos;
@@ -29,7 +32,37 @@ export class ListaProdutosComponent {
     private gestaoService: GestaoService
   ) { }
   telefoneWhatsapp: string = '';
+  carregarMaisConteudo() {
+    if (this.hasMore) {
+      if (!this.carregando){
+        this.carregando = true;
+        this.pagina += 1;
+        this.produtosService.getAll(this.pagina).subscribe(retorno => {
+          this.carregando = false;
+          if (retorno.status == 'sucesso') {
+            if (retorno.mensagem.length < 4) {
+              this.hasMore = false
+            }
+            retorno.mensagem.forEach(elemento => {
+              elemento.quantidade = 1;
+              this.lista.push(elemento)
+            })
+          
+          }
+        })
+      }
+    }
+  }
+  scrollAteOFim() {
+    window.addEventListener('scroll', () => {
+      let media = document.body.scrollHeight * 60 / 100
+      if (window.scrollY >= media) {
+        this.carregarMaisConteudo()
+      }
+    });
+  }
   ngOnInit() {
+    this.scrollAteOFim()
     this.listarProdutos()
     this.listarCategorias()
     this.gestaoService.buscarWhatsapp().subscribe(retorno => {
@@ -42,15 +75,19 @@ export class ListaProdutosComponent {
 
   }
   listarCategorias() {
+    this.carregando = true;
     this.produtosService.getCategorias().subscribe(resposta => {
       if (resposta.status == 'sucesso') {
+        this.carregando = false;
         this.categorias = resposta.mensagem
       }
     })
   }
   listarProdutos() {
     if (this.lista.length == 0) {
-      this.produtosService.getAll().subscribe(coisas => {
+      this.carregando = true;
+      this.produtosService.getAll(this.pagina).subscribe(coisas => {
+        this.carregando = false;
         coisas.mensagem.forEach(e => {
           e.quantidade = 1;
           produtos.push(e)

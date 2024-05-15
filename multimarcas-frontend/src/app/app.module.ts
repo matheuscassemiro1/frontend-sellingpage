@@ -17,6 +17,10 @@ import { AuthService } from './services/auth.service';
 import { PainelProdutosService } from './services/painel-produtos.service';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { CategoriasComponent } from './components/modals/categorias/categorias.component';
+import { FooterComponent } from './components/footer/footer.component';
+import { LoadingComponent } from './components/loading/loading.component';
+import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
+import { CarrinhoComponent } from './components/modals/carrinho/carrinho.component';
 
 @NgModule({
   imports: [
@@ -25,6 +29,7 @@ import { CategoriasComponent } from './components/modals/categorias/categorias.c
     ReactiveFormsModule,
     FormsModule,
     HttpClientModule,
+    MatProgressSpinnerModule,
     RouterModule.forRoot([
       { path: '', component: ListaProdutosComponent },
       { path: 'login', component: LoginComponent },
@@ -41,6 +46,9 @@ import { CategoriasComponent } from './components/modals/categorias/categorias.c
     PainelProdutosComponent,
     TopBarComponent,
     CategoriasComponent,
+    FooterComponent,
+    LoadingComponent,
+    CarrinhoComponent,
   ],
 
   providers: [],

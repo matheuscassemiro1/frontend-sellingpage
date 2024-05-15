@@ -10,14 +10,24 @@ export class ProdutosService {
 
   constructor(private http: HttpClient) { }
 
-  getAll(): Observable<Retorno> {
+  getAll(page: number): Observable<Retorno> {
     let options = {
       headers: new HttpHeaders({
         'Access-Control-Allow-Origin': '*',
         "Access-Control-Allow-Headers": "Origin, X-Requested-With, Content-Type, Accept, Authorization, Cookie"
       })
     }
-    return this.http.get<Retorno>('http://localhost:3001/api/produtos', options);
+    return this.http.get<Retorno>(`http://localhost:3001/api/produtos?page=${page}`, options);
+  }
+
+  getAllPannel(): Observable<RetornoPainel> {
+    let options = {
+      headers: new HttpHeaders({
+        'Access-Control-Allow-Origin': '*',
+        "Access-Control-Allow-Headers": "Origin, X-Requested-With, Content-Type, Accept, Authorization, Cookie"
+      })
+    }
+    return this.http.get<RetornoPainel>('http://localhost:3001/api/produtos-painel', options);
   }
 
   getCategorias(): Observable<RetornoCategorias> {
@@ -50,12 +60,29 @@ export class ProdutosService {
     return this.http.post<RetornoCategorias>(`http://localhost:3001/api/categorias/`, {categoria: categoria}, options);
   }
 
+  alterarCategoria(categoria: string, id: string): Observable<Retorno> {
+    let options = {
+      headers: new HttpHeaders({
+        'Access-Control-Allow-Origin': '*',
+        "Access-Control-Allow-Headers": "Origin, X-Requested-With, Content-Type, Accept, Authorization, Cookie"
+      })
+    }
+    return this.http.put<Retorno>(`http://localhost:3001/api/produto-categoria/`, {categoria: categoria, id: id}, options);
+  }
+
 }
 
 export interface Retorno {
   status: string,
   mensagem: [
     Produto
+  ]
+}
+
+export interface RetornoPainel {
+  status: string,
+  mensagem: [
+    ProdutosPainel
   ]
 }
 
@@ -71,9 +98,19 @@ export interface Produto {
   nome: string,
   imagem: string,
   preco: number,
+  categoria_id: number,
   createdAt: string,
   updatedAt: string,
   quantidade: number
+}
+
+
+
+export interface ProdutosPainel extends Produto {
+  categoria: {
+    id: number,
+    categoria: string
+  }
 }
 
 export interface Categoria {

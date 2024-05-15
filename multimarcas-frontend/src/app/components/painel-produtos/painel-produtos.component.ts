@@ -2,10 +2,10 @@ import { Component } from '@angular/core';
 import { Inject } from '@angular/core';
 import { Input } from '@angular/core';
 import { DOCUMENT } from '@angular/common'
-import { FormGroup, FormControl } from '@angular/forms';
+import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { PainelProdutosService } from 'src/app/services/painel-produtos.service';
 import { FormularioProdutoNovo } from 'src/app/services/painel-produtos.service';
-import { Categoria, ProdutosService } from 'src/app/services/produtos.service';
+import { Categoria, ProdutosPainel, ProdutosService } from 'src/app/services/produtos.service';
 import { Produto } from 'src/app/services/produtos.service';
 import { produtos } from '../lista-produtos/lista-produtos.component';
 import { ListaProdutosComponent } from '../lista-produtos/lista-produtos.component';
@@ -24,30 +24,27 @@ export class PainelProdutosComponent {
   ) {
   }
 
-  ngOnInit(){
+  ngOnInit() {
     this.listarProdutosPainel()
   }
   categorias: Categoria[] = []
-  lista = produtos;
+  produtos: ProdutosPainel[] = []
+  lista: ProdutosPainel[] = []
 
   listarProdutosPainel() {
-    if (this.lista.length == 0){
-      this.produtosService.getAll().subscribe(coisas => {
-        coisas.mensagem.forEach(e => {
-          console.log(e.imagem)
-          e.quantidade = 1;
-          produtos.push(e)
-        })
-        // coisas.mensagem.forEach(e => (console.log(e)))
-      })
-    }
+    this.produtosService.getAllPannel().subscribe(retorno => {
+      if (retorno.status == 'sucesso') {
+        this.lista = retorno.mensagem
+        this.produtos = retorno.mensagem
+      }
+    })
   }
 
   filtrarProdutos(texto: string) {
     if (!texto) {
-      this.lista = produtos;
+      this.lista = this.produtos;
     } else {
-      this.lista = produtos.filter(produto => !produto.nome.toLowerCase().search(texto.toLowerCase()))
+      this.lista = this.produtos.filter(produto => !produto.nome.toLowerCase().search(texto.toLowerCase()))
     }
   }
 
@@ -58,9 +55,9 @@ export class PainelProdutosComponent {
   })
 
   imagem: any = '';
-
   novaImagem: any = '';
   idAltFoto: any = '';
+  idAltCategoria: any
   onSubmit() {
     if (this.formularioProduto.value.categoria === 'default') {
       alert('Selecione uma categoria!')
@@ -74,7 +71,9 @@ export class PainelProdutosComponent {
       this.painelProdutosService.cadastrarProduto(formPost).subscribe((resultado) => {
         if (resultado.status == "sucesso") {
           alert(`${this.formularioProduto.value.nomeDoProduto!} cadastrado com sucesso.`)
-          location.reload()
+          this.listarProdutosPainel()
+          this.formularioProduto.reset()
+          this.fechar()
         } else {
           alert(resultado.mensagem)
         }
@@ -82,12 +81,12 @@ export class PainelProdutosComponent {
     }
   }
 
-  excluirProduto(produto: Produto) {
+  excluirProduto(produto: ProdutosPainel) {
     if (confirm(`O produto ${produto.nome} será excluido! Tem certeza?`)) {
       this.painelProdutosService.excluirProduto(produto.id).subscribe(resultado => {
-        if (resultado.status == "sucesso"){
+        if (resultado.status == "sucesso") {
+          this.listarProdutosPainel()
           alert("Produto exclúido com sucesso!")
-          location.reload()
         } else {
           alert(resultado.mensagem)
         }
@@ -97,7 +96,7 @@ export class PainelProdutosComponent {
 
   abrir() {
     this.produtosService.getCategorias().subscribe(e => {
-      if (e.status == 'sucesso'){
+      if (e.status == 'sucesso') {
         this.categorias = e.mensagem
       }
     })
@@ -108,7 +107,7 @@ export class PainelProdutosComponent {
     document.getElementById('modalNovoProduto')?.classList.remove('d-block')
   }
 
-  modalNovaFoto(produto: Produto) {
+  modalNovaFoto(produto: ProdutosPainel) {
     document.getElementById('idProdutoAltFoto')!.textContent = `#${produto.id} `
     document.getElementById('produtoNome')!.textContent = produto.nome
     this.idAltFoto = produto.id
@@ -123,20 +122,23 @@ export class PainelProdutosComponent {
   formularioNovoPreco = new FormGroup({
     novoPreco: new FormControl(''),
   })
-  submitPreco(){
+  submitPreco() {
     const idProduto = document.getElementById('idProdutoAltPreco')!.textContent
     const novoPreco = this.formularioNovoPreco.value.novoPreco
     this.painelProdutosService.alterarPrecoProduto(idProduto!, novoPreco!).subscribe(resultado => {
-      if(resultado.status == "sucesso"){
+      if (resultado.status == "sucesso") {
+        document.getElementById('modalAlterarPrecoProduto')?.classList.remove('d-block')
+        document.getElementById('idProdutoAltPreco')!.textContent = ``
+        this.formularioNovoPreco.reset()
         alert("O preço do produto foi alterado com sucesso!")
-        location.reload()
+        this.listarProdutosPainel()
       } else {
         alert(resultado.mensagem)
       }
     })
   }
 
-  modalNovoPreco(produto: Produto) {
+  modalNovoPreco(produto: ProdutosPainel) {
     document.getElementById('idProdutoAltPreco')!.textContent = `${produto.id}`
     document.getElementById('produtoNomePreco')!.textContent = ` ${produto.nome}`
     document.getElementById('modalAlterarPrecoProduto')?.classList.add('d-block')
@@ -145,15 +147,50 @@ export class PainelProdutosComponent {
       document.getElementById('idProdutoAltPreco')!.textContent = ``
     })
   }
+  formularioNovaCategoria = new FormGroup({
+    categoria: new FormControl('default', [Validators.required, Validators.pattern('[0-9]')]),
+  })
+  modalNovaCategoria(produto: ProdutosPainel) {
+    this.produtosService.getCategorias().subscribe(e => {
+      if (e.status == 'sucesso') {
+        this.categorias = e.mensagem
+      }
+    })
+    document.getElementById('idProdutoAltCategoria')!.textContent = `${produto.id} - ${produto.nome}`
+    this.idAltCategoria = produto.id
+    document.getElementById('modalAlterarCategoriaProduto')?.classList.add('d-block')
+    document.getElementById('botaoFechaAlterarCategoria')?.addEventListener('click', (e) => {
+      this.idAltCategoria = undefined
+      document.getElementById('modalAlterarCategoriaProduto')?.classList.remove('d-block')
+      document.getElementById('idProdutoAltCategoria')!.textContent = ``
+    })
+  }
+  submitCategoria() {
+    if (this.formularioNovaCategoria.valid) {
+      this.produtosService.alterarCategoria(this.formularioNovaCategoria!.controls['categoria']!.value!, this.idAltCategoria).subscribe(response => {
+        if (response.status == 'sucesso') {
+          this.idAltCategoria = undefined
+          document.getElementById('modalAlterarCategoriaProduto')?.classList.remove('d-block')
+          document.getElementById('idProdutoAltCategoria')!.textContent = ``
+          this.listarProdutosPainel()
+          this.formularioNovaCategoria.reset()
+          alert("Categoria alterada!")
+          
+        }
+      }, error => {
+        alert(JSON.stringify(error.message))
+      })
+    }
+  }
 
   alterar() {
-    // TODO: Use EventEmitter with form value
     if (this.novaImagem === '') {
       alert('Selecione uma imagem')
     }
     else {
       this.painelProdutosService.alterarImagem(this.idAltFoto, this.novaImagem.target.files[0]).subscribe(resultado => {
-        if(resultado.status == "sucesso"){
+        if (resultado.status == "sucesso") {
+          this.listarProdutosPainel()
           alert("A imagem do produto foi alterada com sucesso!")
           location.reload()
         } else {
