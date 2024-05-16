@@ -1,19 +1,22 @@
 <app-header (filtrarProduto)="onFiltrarProduto($event)"></app-header>
 <body>
+  <div class="d-flex justify-content-center">
+    <span class="mt-0" *ngIf="categorias!.length! > 0">Filtro por Categoria</span>
+  </div>
+  <div class="d-flex justify-content-center mb-2 gap-2">
+    <mat-button-toggle-group appearance="legacy" aria-label="Categorias">
+      <mat-button-toggle checked="true" (click)="listarProdutos()">TODOS</mat-button-toggle>
+      <mat-button-toggle *ngFor="let categoria of categorias" (click)="listarProdutosCategoria(categoria.id.toString())">{{categoria.categoria | uppercase}}</mat-button-toggle>
+    </mat-button-toggle-group>
+  </div>
   <div *ngIf="lista.length <= 0; else existemProdutos"
   style="display: flex; flex: 1; align-items: center; justify-content: center">
-  <h2>Não há produtos disponíveis no momento</h2>
+  <h2>Não há produtos a serem exibidos.</h2>
 </div>
 
 <ng-template #existemProdutos>
   <div class="row mb-0 mt-1" style="max-width: 99%; margin-left: 0.5vw;">
-    <div class="d-flex justify-content-center">
-      <span class="mt-0" *ngIf="categorias!.length! > 0">Filtro por Categoria</span>
-    </div>
-    <div class="d-flex justify-content-center mb-2 gap-2">
-      <button class="btn btn-sm btn-success p-1">TODOS</button>
-      <button *ngFor="let categoria of categorias" class="btn btn-sm btn-success p-1">{{categoria.categoria | uppercase}}</button>
-    </div>
+    
     <hr />
     <div style="
         display: flex;
@@ -77,18 +80,6 @@
           </div>
         </div>
       </div>
-    </div>
-
-    <div *ngIf="carrinhoComItems()">
-      <button class="btn btn-warning text-align-center" style="
-          width: 100%;
-          margin-left: auto;
-          bottom: 20%;
-          position: fixed;
-          opacity: 80%;
-        " (click)="fecharCarrinho()">
-        FINALIZAR COMPRA
-      </button>
     </div>
 
   </div>

@@ -19,12 +19,16 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { CategoriasComponent } from './components/modals/categorias/categorias.component';
 import { FooterComponent } from './components/footer/footer.component';
 import { LoadingComponent } from './components/loading/loading.component';
-import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { CarrinhoComponent } from './components/modals/carrinho/carrinho.component';
-import {MatIconModule} from '@angular/material/icon';
-import { MatIconRegistry } from '@angular/material/icon';
+import { MatIconModule } from '@angular/material/icon';
 import { CartComponent } from './components/icons/cart/cart.component';
-import {MatBadgeModule} from '@angular/material/badge';
+import { MatBadgeModule } from '@angular/material/badge';
+import { MatButtonToggleModule } from '@angular/material/button-toggle';
+import { MatCardModule } from '@angular/material/card';
+import {MatListModule} from '@angular/material/list';
+import {MatButtonModule} from '@angular/material/button';
+
 @NgModule({
   imports: [
     BrowserModule,
@@ -35,11 +39,14 @@ import {MatBadgeModule} from '@angular/material/badge';
     MatProgressSpinnerModule,
     MatIconModule,
     MatBadgeModule,
+    MatButtonToggleModule,
+    MatCardModule,
+    MatListModule,
     RouterModule.forRoot([
       { path: '', component: ListaProdutosComponent },
       { path: 'login', component: LoginComponent },
       { path: 'gestao', component: GestaoComponent, canActivate: [authGuard] },
-      { path: 'produtos', component: PainelProdutosComponent, canActivate: [authGuard]  }]),
+      { path: 'produtos', component: PainelProdutosComponent, canActivate: [authGuard] }]),
     BrowserAnimationsModule
   ],
   declarations: [
@@ -56,8 +63,6 @@ import {MatBadgeModule} from '@angular/material/badge';
     CarrinhoComponent,
     CartComponent,
   ],
-
-  providers: [],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

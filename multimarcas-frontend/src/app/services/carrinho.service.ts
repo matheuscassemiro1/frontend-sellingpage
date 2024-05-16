@@ -31,9 +31,17 @@ export class CarrinhoService {
     )) */
   }
 
-  limparCarrinho() {
+  limparCarrinho(item: Item) {
     this.carrinho = [];
     return this.carrinho;
+  }
+
+  removerItemCarrinho(item: Item){
+    const testeIndexProduto = this.carrinho.findIndex(armazenado => armazenado.nome == item.nome)
+    if (testeIndexProduto >= 0) {
+      this.carrinho.splice(testeIndexProduto, 1)
+      this.itemsSubject.next(this.carrinho)
+    }
   }
 
   constructor() { }

@@ -4,37 +4,46 @@ import { Categoria, ProdutosService } from 'src/app/services/produtos.service';
 import { Produto } from 'src/app/services/produtos.service';
 import { Observable } from 'rxjs';
 import { GestaoService } from 'src/app/services/gestao.service';
+import { MatSnackBar } from '@angular/material/snack-bar';
+
 @Component({
   selector: 'app-lista-produtos',
   templateUrl: './lista-produtos.component.html',
-  styleUrls: ['./lista-produtos.component.css']
+  styleUrls: ['./lista-produtos.component.css'],
+  providers: [MatSnackBar]
 })
 
 
 export class ListaProdutosComponent {
   lista: Produto[] = produtos;
   categorias: Categoria[] | undefined
+  pesquisaGlobal = true;
   carregando = false;
   pagina = 1;
   hasMore = true;
   onFiltrarProduto(texto: string) {
     if (!texto) {
       this.lista = produtos;
-      window.scrollY
     } else {
       this.lista = produtos.filter(produto => !produto.nome.toLowerCase().search(texto.toLowerCase()))
     }
 
   }
+
   constructor(
+    private _snackBar: MatSnackBar,
     private produtosService: ProdutosService,
     private carrinhoService: CarrinhoService,
     private gestaoService: GestaoService
   ) { }
+
+  openSnackBar(produto: Produto) {
+    this._snackBar.open(`${produto.quantidade.toString()}x ${produto.nome.toString()}(s) adicionado(s) ao carrinho`, 'OK', { duration: 1300, verticalPosition: 'top' });
+  }
   telefoneWhatsapp: string = '';
   carregarMaisConteudo() {
-    if (this.hasMore) {
-      if (!this.carregando){
+    if (this.hasMore && this.pesquisaGlobal) {
+      if (!this.carregando) {
         this.carregando = true;
         this.pagina += 1;
         this.produtosService.getAll(this.pagina).subscribe(retorno => {
@@ -47,7 +56,7 @@ export class ListaProdutosComponent {
               elemento.quantidade = 1;
               this.lista.push(elemento)
             })
-          
+
           }
         })
       }
@@ -55,7 +64,7 @@ export class ListaProdutosComponent {
   }
   scrollAteOFim() {
     window.addEventListener('scroll', () => {
-      let media = document.body.scrollHeight * 60 / 100
+      let media = document.body.scrollHeight * 63 / 100
       if (window.scrollY >= media) {
         this.carregarMaisConteudo()
       }
@@ -84,24 +93,38 @@ export class ListaProdutosComponent {
     })
   }
   listarProdutos() {
-    if (this.lista.length == 0) {
-      this.carregando = true;
+    this.pesquisaGlobal = true;
+    this.carregando = true;
+    if (produtos.length > 0) {
+      this.carregando = false;
+      this.lista = produtos
+    } else {
       this.produtosService.getAll(this.pagina).subscribe(coisas => {
         this.carregando = false;
         coisas.mensagem.forEach(e => {
           e.quantidade = 1;
           produtos.push(e)
         })
-        // coisas.mensagem.forEach(e => (console.log(e)))
       })
     }
   }
+  listarProdutosCategoria(categoria: string) {
+    this.pesquisaGlobal = false;
+    this.pagina = 1;
+    this.carregando = true;
+    this.lista = []
+    this.produtosService.getAllCategory(categoria).subscribe(coisas => {
+      this.carregando = false;
+      coisas.mensagem.forEach(e => {
+        e.quantidade = 1;
+        this.lista.push(e)
+      })
+    })
+  }
   adicionarAoCarrinho(produto: Produto) {
     this.carrinhoService.adicionarAoCarrinho(produto)
-    //window.alert(`O ${produto.nome} foi adicionado ao seu carrinho!`)
+    this.openSnackBar(produto)
   }
-
-
 
   carrinhoComItems(): boolean {
     if (this.carrinhoService.listarCarrinho().length > 0) {
@@ -109,23 +132,6 @@ export class ListaProdutosComponent {
     } else {
       return false
     }
-  }
-
-
-  fecharCarrinho() {
-    let texto = `https://api.whatsapp.com/send/?phone=55${this.telefoneWhatsapp}&text=Ol%C3%A1%20eu%20quero%20comprar+%20+`
-    let carrinho = this.carrinhoService.listarCarrinho()
-    carrinho.forEach((elemento, index) => {
-      if (index == carrinho.length - 1) {
-        texto += `%20+%20+e%20${elemento.quantidade}%20${elemento.nome}.`
-      }
-      else {
-        texto += `%20+${elemento.quantidade}%20${elemento.nome},`
-      }
-    })
-    location.href = texto;
-    //https://api.whatsapp.com/send/?phone=5531995633606&text=Ol%C3%A1%20eu%20gostaria%20de%20comprar+%20+b+%20+c
-
   }
 
 }

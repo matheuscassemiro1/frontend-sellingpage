@@ -20,6 +20,16 @@ export class ProdutosService {
     return this.http.get<Retorno>(`http://localhost:3001/api/produtos?page=${page}`, options);
   }
 
+  getAllCategory(categoria: string): Observable<Retorno> {
+    let options = {
+      headers: new HttpHeaders({
+        'Access-Control-Allow-Origin': '*',
+        "Access-Control-Allow-Headers": "Origin, X-Requested-With, Content-Type, Accept, Authorization, Cookie"
+      })
+    }
+    return this.http.get<Retorno>(`http://localhost:3001/api/produtos/${categoria}`, options);
+  }
+
   getAllPannel(): Observable<RetornoPainel> {
     let options = {
       headers: new HttpHeaders({

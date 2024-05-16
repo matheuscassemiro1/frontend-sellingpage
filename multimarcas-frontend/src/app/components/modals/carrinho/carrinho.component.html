@@ -1,3 +1,33 @@
 <div class="carrinho">
-    <icon-cart [itensCarrinho]="contagem"></icon-cart>
+    <div *ngIf="cardProdutos" class="mb-3 mx-2" style="background-color: white; border-radius: 30px;">
+        <mat-card style="border-radius: 30px; border: 1px black solid">
+            <mat-card-header>
+                <button class="btn-close mx-1" style="margin-left: 0;" (click)="fecharCardProdutos()"></button>Carrinho ({{contagem}})
+            </mat-card-header>
+            <hr class="mb-0 p-0">
+            <mat-card-content class="mt-0 p-0" style="max-height: 200px; overflow-y: auto;">
+                <mat-list class="mt-0">
+                    <mat-list-item *ngFor="let item of items;">{{item.quantidade}}x {{item.nome}} <span class="badge rounded-pill bg-danger" (click)="removerItem(item)">X</span></mat-list-item>
+                </mat-list>
+            </mat-card-content>
+            <button class="btn btn-success w-100" style="box-shadow: 0px 3px black; border: 1px solid black; border-left: 2px solid black; border-right: 2px solid black;" (click)="finalizarCompra()">Finalizar Compra</button>
+        </mat-card>
+        
+    </div>
+    <ng-container *ngIf="!cardProdutos">
+        <icon-cart (click)="abrirCardProdutos()" [itensCarrinho]="contagem" style="z-index: 20; position: static;"></icon-cart>
+    </ng-container>
+</div>
+<div *ngIf="!cardProdutos" style="position: absolute; z-index: 0;" class="w-100">
+    <div class="d-flex justify-content-center">
+        <button class="btn btn-warning text-align-center" style="
+        width: 50%;
+        margin-left: auto;
+        bottom: 0;
+        position: fixed;
+        opacity: 100%;
+      " (click)="finalizarCompra()">
+        FINALIZAR COMPRA
+    </button>
+    </div>
 </div>

@@ -35,3 +35,13 @@ body {
     overflow: hidden;
   }
 }
+
+mat-button-toggle-group {
+  background-color: #F05D23;
+}
+mat-button-toggle {
+  color: rgb(37, 37, 37);
+}
+mat-snack-bar{
+  color: #F05D23;
+}
