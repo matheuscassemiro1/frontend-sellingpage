@@ -21,7 +21,10 @@ import { FooterComponent } from './components/footer/footer.component';
 import { LoadingComponent } from './components/loading/loading.component';
 import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
 import { CarrinhoComponent } from './components/modals/carrinho/carrinho.component';
-
+import {MatIconModule} from '@angular/material/icon';
+import { MatIconRegistry } from '@angular/material/icon';
+import { CartComponent } from './components/icons/cart/cart.component';
+import {MatBadgeModule} from '@angular/material/badge';
 @NgModule({
   imports: [
     BrowserModule,
@@ -30,6 +33,8 @@ import { CarrinhoComponent } from './components/modals/carrinho/carrinho.compone
     FormsModule,
     HttpClientModule,
     MatProgressSpinnerModule,
+    MatIconModule,
+    MatBadgeModule,
     RouterModule.forRoot([
       { path: '', component: ListaProdutosComponent },
       { path: 'login', component: LoginComponent },
@@ -49,6 +54,7 @@ import { CarrinhoComponent } from './components/modals/carrinho/carrinho.compone
     FooterComponent,
     LoadingComponent,
     CarrinhoComponent,
+    CartComponent,
   ],
 
   providers: [],

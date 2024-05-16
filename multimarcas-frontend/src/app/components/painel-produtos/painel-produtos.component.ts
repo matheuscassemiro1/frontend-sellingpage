@@ -49,9 +49,9 @@ export class PainelProdutosComponent {
   }
 
   formularioProduto = new FormGroup({
-    nomeDoProduto: new FormControl(''),
-    precoDoProduto: new FormControl(''),
-    categoria: new FormControl('default')
+    nomeDoProduto: new FormControl('', [Validators.nullValidator, Validators.required]),
+    precoDoProduto: new FormControl('', [Validators.pattern('^[0-9.,]+$'), Validators.required]),
+    categoria: new FormControl('default', [Validators.pattern('^[0-9]+$'), Validators.required])
   })
 
   imagem: any = '';
@@ -104,6 +104,7 @@ export class PainelProdutosComponent {
   }
 
   fechar() {
+    this.formularioProduto.reset()
     document.getElementById('modalNovoProduto')?.classList.remove('d-block')
   }
 

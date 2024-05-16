@@ -35,18 +35,18 @@
             </button>
           </div>
           <div class="modal-body">
-            <form [formGroup]="formularioProduto" (ngSubmit)="onSubmit()" ngNativeValidate>
+            <form [formGroup]="formularioProduto" (ngSubmit)="onSubmit()">
               <div class="mb-1">
-                <label for="exampleFormControlInput1" class="form-label"><b>Nome do Produto</b></label>
-                <input formControlName="nomeDoProduto" type="text" class="form-control mb-2" id="nomeDoProduto"
-                  placeholder="ex: Brahma Litrão" required />
-                <label for="exampleFormControlInput1" class="form-label"><b>Preço</b></label>
-                <input type="number" step="0.1" class="form-control" formControlName="precoDoProduto"
-                  placeholder="ex: 12,90" required />
+                <label for="nome" class="form-label"><b>Nome do Produto</b></label>
+                <input formControlName="nomeDoProduto" type="text" class="form-control mb-2" [ngClass]="{'is-invalid': formularioProduto.controls['nomeDoProduto'].status == 'INVALID' && formularioProduto.touched}" id="nomeDoProduto"
+                  placeholder="ex: Brahma Litrão"/>
+                <label for="precoDoProduto" class="form-label"><b>Preço</b></label>
+                <input id="precoDoProduto" type="number" step="0.1" class="form-control" formControlName="precoDoProduto"
+                  placeholder="ex: 12,90" [ngClass]="{'is-invalid': formularioProduto.controls['precoDoProduto'].status == 'INVALID' && formularioProduto.touched}" />
               </div>
               <div class="mb-2">
                 <label for="categoria" class="form-label"><b>Categoria</b></label>
-                <select formControlName="categoria" id="categoria" class="form-control" required>
+                <select formControlName="categoria" id="categoria" class="form-control" [ngClass]="{'is-invalid': formularioProduto.controls['categoria'].status == 'INVALID' && formularioProduto.touched}">
                   <option value="default">Selecione a categoria</option>
                   <option *ngFor="let categoria of categorias" [value]="categoria.id">{{ categoria.categoria | uppercase }}</option>
                 </select>
@@ -55,7 +55,7 @@
                 <label for="arquivo" class="form-label"><b>Imagem</b></label>
                 <input (change)="[(imagem = $event)]" class="form-control" type="file" accept="image/*" />
               </div>
-              <button type="submit" class="btn btn-success w-100">
+              <button type="submit" [disabled]="formularioProduto.status.toString() == 'INVALID'" class="btn btn-success w-100">
                 Cadastrar
               </button>
             </form>

@@ -103,7 +103,7 @@ export class ListaProdutosComponent {
 
 
 
-  carrinhoCheio(): boolean {
+  carrinhoComItems(): boolean {
     if (this.carrinhoService.listarCarrinho().length > 0) {
       return true;
     } else {

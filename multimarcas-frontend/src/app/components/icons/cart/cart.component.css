@@ -1,0 +1,23 @@
+.mat-icon {
+    cursor: pointer;
+    height: 100px;
+    width: 100px;
+    z-index: 90;
+}
+
+:host ::ng-deep .mat-badge-content 
+{
+left: 10px !important;
+top: 10px !important;
+}
+.texto-carrinho{
+    color: white;
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    margin-bottom: 15px;
+    margin-right: 25px;
+    font-size: 0.8rem;
+    text-wrap: wrap;
+    z-index: 100;
+}

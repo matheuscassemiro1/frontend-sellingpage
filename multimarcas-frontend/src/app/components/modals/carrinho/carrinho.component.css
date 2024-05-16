@@ -1,0 +1,15 @@
+.carrinho {
+    position: fixed;
+    bottom: 0;
+    right: 0;
+}
+
+.texto-carrinho{
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    margin-left: 10px;
+    font-size: 0.8rem;
+    text-wrap: wrap;
+    z-index: 10;
+}
