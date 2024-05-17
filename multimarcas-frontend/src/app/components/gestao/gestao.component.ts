@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { Subscription } from 'rxjs';
 import { GestaoService } from 'src/app/services/gestao.service';
 @Component({
   selector: 'app-gestao',
@@ -6,61 +7,82 @@ import { GestaoService } from 'src/app/services/gestao.service';
   styleUrls: ['./gestao.component.css']
 })
 export class GestaoComponent {
-  constructor (
-    private gestaoService: GestaoService
+  constructor(
+    private gestaoService: GestaoService,
+
   ) {
 
   }
-  abrirModalCategorias(){
-    this.modalCategorias = true;
-  }
-  fecharModalCategorias(){
-    this.modalCategorias = false;
+  private subs = new Subscription()
+  ngOnDestoy() {
+    this.subs.unsubscribe()
   }
   modalCategorias = false;
   whatsapp: string = '';
-  ngOnInit(){
-    this.gestaoService.buscarWhatsapp().subscribe(retorno => {
-      if (retorno.status == "sucesso"){
-        this.whatsapp = retorno.mensagem
-      } else {
-        this.whatsapp = 'N/A';
-      }
-    })
+  modalAlterarSenha = false;
+
+  abrirModalAlterarSenha() {
+    this.modalAlterarSenha = true;
+  }
+  fecharModalAlterarSenha() {
+    this.modalAlterarSenha = false;
   }
 
-  cadastrarNovoWhatsapp(){
-    if(confirm('Deseja criar o número de redirecionamento?')){
+  abrirModalCategorias() {
+    this.modalCategorias = true;
+  }
+  fecharModalCategorias() {
+    this.modalCategorias = false;
+  }
+
+  ngOnInit() {
+    this.subs.add(
+      this.gestaoService.buscarWhatsapp().subscribe(retorno => {
+        if (retorno.status == "sucesso") {
+          this.whatsapp = retorno.mensagem
+        } else {
+          this.whatsapp = 'N/A';
+        }
+      })
+    )
+  }
+
+  cadastrarNovoWhatsapp() {
+    if (confirm('Deseja criar o número de redirecionamento?')) {
       let telefone = prompt("Insira o novo telefone: Ex: 27999552202")
-      if (telefone == '' || telefone == null){
+      if (telefone == '' || telefone == null) {
         alert("O número não pode estar em branco.")
       } else {
-        this.gestaoService.criarNumeroWhatsapp(telefone!).subscribe(retorno => {
-          if (retorno.status == "sucesso"){
-            alert("Número cadastrado.")
-            location.reload()
-          } else {
-            alert(retorno.mensagem)
-          }
-        })
+        this.subs.add(
+          this.gestaoService.criarNumeroWhatsapp(telefone!).subscribe(retorno => {
+            if (retorno.status == "sucesso") {
+              alert("Número cadastrado.")
+              location.reload()
+            } else {
+              alert(retorno.mensagem)
+            }
+          })
+        )
       }
     }
   }
 
-  alterarNumeroWhatsapp(){
-    if(confirm('Deseja alterar o número de redirecionamento?')){
+  alterarNumeroWhatsapp() {
+    if (confirm('Deseja alterar o número de redirecionamento?')) {
       let telefone = prompt("Insira o novo telefone: Ex: 27999552202")
-      if (telefone == '' || telefone == null){
+      if (telefone == '' || telefone == null) {
         alert("O número não pode estar em branco.")
       } else {
-        this.gestaoService.alterarNumeroWhatsapp(telefone!).subscribe(retorno => {
-          if (retorno.status == "sucesso"){
-            alert("Número alterado.")
-            location.reload()
-          } else {
-            alert(retorno.mensagem)
-          }
-        })
+        this.subs.add(
+          this.gestaoService.alterarNumeroWhatsapp(telefone!).subscribe(retorno => {
+            if (retorno.status == "sucesso") {
+              alert("Número alterado.")
+              location.reload()
+            } else {
+              alert(retorno.mensagem)
+            }
+          })
+        )
       }
     }
   }

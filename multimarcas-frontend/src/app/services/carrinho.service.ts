@@ -25,10 +25,6 @@ export class CarrinhoService {
   }
   contarItens() {
     return this.itemsSubject.asObservable()
-    /* return of(this.carrinho.reduce(
-      (accumulator, currentValue) => accumulator + currentValue.quantidade,
-      0,
-    )) */
   }
 
   limparCarrinho(item: Item) {

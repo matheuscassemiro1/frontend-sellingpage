@@ -29,12 +29,21 @@
             </div>
         </div>
 
+        <div>
+            <div class="card flex-row mb-4 ml-1 px-1 text-center">
+                <div class="card-body ">
+                    <h5 class="card-title fs-5">Admin</h5>
+                    <h6 class="card-subtitle mb-2 text-muted" style="font-size: 1rem;">Gestão do usuário</h6>
+                    <button class="btn btn-secondary" (click)="abrirModalAlterarSenha()">Alterar senha</button>
+                </div>
+            </div>
 
+        </div>
     </div>
 
 
 <app-categorias *ngIf="modalCategorias" (fecharModal)="fecharModalCategorias()"></app-categorias>
 
 </body>
-
+<app-alterar-senha *ngIf="modalAlterarSenha" (fecharModal)="fecharModalAlterarSenha()"></app-alterar-senha>
 <app-footer></app-footer>

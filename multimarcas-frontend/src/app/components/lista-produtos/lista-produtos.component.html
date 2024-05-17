@@ -1,7 +1,7 @@
 <app-header (filtrarProduto)="onFiltrarProduto($event)"></app-header>
 <body>
   <div class="d-flex justify-content-center">
-    <span class="mt-0" *ngIf="categorias!.length! > 0">Filtro por Categoria</span>
+    <span class="mt-0" *ngIf="categorias!.length! > 0 && !carregando">Filtro por Categoria</span>
   </div>
   <div class="d-flex justify-content-center mb-2 gap-2">
     <mat-button-toggle-group appearance="legacy" aria-label="Categorias">

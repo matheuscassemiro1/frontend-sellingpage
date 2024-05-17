@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { CarrinhoService, Item } from 'src/app/services/carrinho.service';
 import {MatButtonModule} from '@angular/material/button';
 import { GestaoService } from 'src/app/services/gestao.service';
+import { Subscription } from 'rxjs';
 @Component({
   selector: 'app-carrinho',
   templateUrl: './carrinho.component.html',
@@ -10,29 +11,36 @@ import { GestaoService } from 'src/app/services/gestao.service';
 export class CarrinhoComponent {
   constructor(
     private carrinhoService: CarrinhoService,
-    private gestaoService: GestaoService
+    private gestaoService: GestaoService,
   ) { }
+  private subs = new Subscription()
   telefoneWhatsapp: string | undefined
+  ngOnDestroy(){
+    this.subs.unsubscribe()
+  }
   buscarWhatsapp(){
-    this.gestaoService.buscarWhatsapp().subscribe(retorno => {
-      if (retorno.status == "sucesso") {
-        this.telefoneWhatsapp = retorno.mensagem
-      }
-    })
-  
+    this.subs.add(
+      this.gestaoService.buscarWhatsapp().subscribe(retorno => {
+        if (retorno.status == "sucesso") {
+          this.telefoneWhatsapp = retorno.mensagem
+        }
+      })
+    )
   }
 
   items: Item[] = []
   cardProdutos = false;
   contagem: string = '0';
   contarProdutos() {
-    this.carrinhoService.contarItens().subscribe((e) => {
-      this.items = e
-      this.contagem = e.reduce(
-        (accumulator, currentValue) => accumulator + currentValue.quantidade,
-        0,
-      ).toString()
-    })
+    this.subs.add(
+      this.carrinhoService.contarItens().subscribe((e) => {
+        this.items = e
+        this.contagem = e.reduce(
+          (accumulator, currentValue) => accumulator + currentValue.quantidade,
+          0,
+        ).toString()
+      })
+    )
   }
   abrirCardProdutos(){
     this.cardProdutos = true;

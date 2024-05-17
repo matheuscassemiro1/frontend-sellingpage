@@ -57,29 +57,8 @@ export class AuthService {
     })
   };
 
-  validarAutenticacao(token: string | null): Observable<Resultado> {
-    if (token === null) {
-      let httpOptionsValidar = {
-        headers: new HttpHeaders({
-          'Content-Type': 'application/json',
-          'Access-Control-Allow-Origin': '*',
-          "Access-Control-Allow-Headers": "Origin, X-Requested-With, Content-Type, Accept, Authorization, Cookie",
-        })
-      };
-      return this.http.get<Resultado>(`http://localhost:3001/api/auth`, httpOptionsValidar)
-
-    } else {
-      let httpOptionsValidar = {
-        headers: new HttpHeaders({
-          'Content-Type': 'application/json',
-          'Access-Control-Allow-Origin': '*',
-          "Access-Control-Allow-Headers": "Origin, X-Requested-With, Content-Type, Accept, Authorization, Cookie",
-          "Authorization": token
-        })
-      };
-      return this.http.get<Resultado>(`http://localhost:3001/api/auth`, httpOptionsValidar)
-    }
-
+  validarAutenticacao(): Observable<Resultado> {
+      return this.http.get<Resultado>(`http://localhost:3001/api/auth`)
   }
 
   tentarLogin(credenciais: Object): Observable<Resultado> {

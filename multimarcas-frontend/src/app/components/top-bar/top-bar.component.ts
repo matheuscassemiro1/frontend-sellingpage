@@ -6,5 +6,8 @@ import { Component } from '@angular/core';
   styleUrls: ['./top-bar.component.css']
 })
 export class TopBarComponent {
-
+  sair() {
+    localStorage.clear()
+    location.href = '/'
+  }
 }

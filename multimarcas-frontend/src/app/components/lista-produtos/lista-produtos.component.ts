@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { CarrinhoService } from '../../services/carrinho.service';
 import { Categoria, ProdutosService } from 'src/app/services/produtos.service';
 import { Produto } from 'src/app/services/produtos.service';
-import { Observable } from 'rxjs';
+import { Observable, Subscription } from 'rxjs';
 import { GestaoService } from 'src/app/services/gestao.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
 
@@ -21,6 +21,20 @@ export class ListaProdutosComponent {
   carregando = false;
   pagina = 1;
   hasMore = true;
+
+
+  constructor(
+    private _snackBar: MatSnackBar,
+    private produtosService: ProdutosService,
+    private carrinhoService: CarrinhoService,
+    private gestaoService: GestaoService,
+
+  ) { }
+  private subs = new Subscription()
+  ngOnDestroy() {
+    this.subs.unsubscribe()
+  }
+
   onFiltrarProduto(texto: string) {
     if (!texto) {
       this.lista = produtos;
@@ -30,12 +44,6 @@ export class ListaProdutosComponent {
 
   }
 
-  constructor(
-    private _snackBar: MatSnackBar,
-    private produtosService: ProdutosService,
-    private carrinhoService: CarrinhoService,
-    private gestaoService: GestaoService
-  ) { }
 
   openSnackBar(produto: Produto) {
     this._snackBar.open(`${produto.quantidade.toString()}x ${produto.nome.toString()}(s) adicionado(s) ao carrinho`, 'OK', { duration: 1300, verticalPosition: 'top' });
@@ -46,19 +54,20 @@ export class ListaProdutosComponent {
       if (!this.carregando) {
         this.carregando = true;
         this.pagina += 1;
-        this.produtosService.getAll(this.pagina).subscribe(retorno => {
-          this.carregando = false;
-          if (retorno.status == 'sucesso') {
-            if (retorno.mensagem.length < 4) {
-              this.hasMore = false
-            }
-            retorno.mensagem.forEach(elemento => {
-              elemento.quantidade = 1;
-              this.lista.push(elemento)
-            })
+        this.subs.add(
+          this.produtosService.getAll(this.pagina).subscribe(retorno => {
+            this.carregando = false;
+            if (retorno.status == 'sucesso') {
+              if (retorno.mensagem.length < 4) {
+                this.hasMore = false
+              }
+              retorno.mensagem.forEach(elemento => {
+                elemento.quantidade = 1;
+                this.lista.push(elemento)
+              })
 
-          }
-        })
+            }
+          }))
       }
     }
   }
@@ -74,23 +83,27 @@ export class ListaProdutosComponent {
     this.scrollAteOFim()
     this.listarProdutos()
     this.listarCategorias()
-    this.gestaoService.buscarWhatsapp().subscribe(retorno => {
-      if (retorno.status == "sucesso") {
-        this.telefoneWhatsapp = retorno.mensagem
-      } else {
-        this.telefoneWhatsapp = 'N/A';
-      }
-    })
+    this.subs.add(
+      this.gestaoService.buscarWhatsapp().subscribe(retorno => {
+        if (retorno.status == "sucesso") {
+          this.telefoneWhatsapp = retorno.mensagem
+        } else {
+          this.telefoneWhatsapp = 'N/A';
+        }
+      })
+    )
 
   }
   listarCategorias() {
     this.carregando = true;
-    this.produtosService.getCategorias().subscribe(resposta => {
-      if (resposta.status == 'sucesso') {
-        this.carregando = false;
-        this.categorias = resposta.mensagem
-      }
-    })
+    this.subs.add(
+      this.produtosService.getCategorias().subscribe(resposta => {
+        if (resposta.status == 'sucesso') {
+          this.carregando = false;
+          this.categorias = resposta.mensagem
+        }
+      })
+    )
   }
   listarProdutos() {
     this.pesquisaGlobal = true;
@@ -99,13 +112,15 @@ export class ListaProdutosComponent {
       this.carregando = false;
       this.lista = produtos
     } else {
-      this.produtosService.getAll(this.pagina).subscribe(coisas => {
-        this.carregando = false;
-        coisas.mensagem.forEach(e => {
-          e.quantidade = 1;
-          produtos.push(e)
+      this.subs.add(
+        this.produtosService.getAll(this.pagina).subscribe(coisas => {
+          this.carregando = false;
+          coisas.mensagem.forEach(e => {
+            e.quantidade = 1;
+            produtos.push(e)
+          })
         })
-      })
+      )
     }
   }
   listarProdutosCategoria(categoria: string) {
@@ -113,13 +128,15 @@ export class ListaProdutosComponent {
     this.pagina = 1;
     this.carregando = true;
     this.lista = []
-    this.produtosService.getAllCategory(categoria).subscribe(coisas => {
-      this.carregando = false;
-      coisas.mensagem.forEach(e => {
-        e.quantidade = 1;
-        this.lista.push(e)
+    this.subs.add(
+      this.produtosService.getAllCategory(categoria).subscribe(coisas => {
+        this.carregando = false;
+        coisas.mensagem.forEach(e => {
+          e.quantidade = 1;
+          this.lista.push(e)
+        })
       })
-    })
+    )
   }
   adicionarAoCarrinho(produto: Produto) {
     this.carrinhoService.adicionarAoCarrinho(produto)

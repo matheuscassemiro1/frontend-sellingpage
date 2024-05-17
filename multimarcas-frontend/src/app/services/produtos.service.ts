@@ -11,73 +11,32 @@ export class ProdutosService {
   constructor(private http: HttpClient) { }
 
   getAll(page: number): Observable<Retorno> {
-    let options = {
-      headers: new HttpHeaders({
-        'Access-Control-Allow-Origin': '*',
-        "Access-Control-Allow-Headers": "Origin, X-Requested-With, Content-Type, Accept, Authorization, Cookie"
-      })
-    }
-    return this.http.get<Retorno>(`http://localhost:3001/api/produtos?page=${page}`, options);
+    return this.http.get<Retorno>(`http://localhost:3001/api/produtos?page=${page}`);
   }
 
   getAllCategory(categoria: string): Observable<Retorno> {
-    let options = {
-      headers: new HttpHeaders({
-        'Access-Control-Allow-Origin': '*',
-        "Access-Control-Allow-Headers": "Origin, X-Requested-With, Content-Type, Accept, Authorization, Cookie"
-      })
-    }
-    return this.http.get<Retorno>(`http://localhost:3001/api/produtos/${categoria}`, options);
+    return this.http.get<Retorno>(`http://localhost:3001/api/produtos/${categoria}`);
   }
 
   getAllPannel(): Observable<RetornoPainel> {
-    let options = {
-      headers: new HttpHeaders({
-        'Access-Control-Allow-Origin': '*',
-        "Access-Control-Allow-Headers": "Origin, X-Requested-With, Content-Type, Accept, Authorization, Cookie"
-      })
-    }
-    return this.http.get<RetornoPainel>('http://localhost:3001/api/produtos-painel', options);
+    return this.http.get<RetornoPainel>('http://localhost:3001/api/produtos-painel');
   }
 
   getCategorias(): Observable<RetornoCategorias> {
-    let options = {
-      headers: new HttpHeaders({
-        'Access-Control-Allow-Origin': '*',
-        "Access-Control-Allow-Headers": "Origin, X-Requested-With, Content-Type, Accept, Authorization, Cookie"
-      })
-    }
-    return this.http.get<RetornoCategorias>('http://localhost:3001/api/categorias', options);
+  
+    return this.http.get<RetornoCategorias>('http://localhost:3001/api/categorias');
   }
 
   deleteCategoria(id: string): Observable<RetornoCategorias> {
-    let options = {
-      headers: new HttpHeaders({
-        'Access-Control-Allow-Origin': '*',
-        "Access-Control-Allow-Headers": "Origin, X-Requested-With, Content-Type, Accept, Authorization, Cookie"
-      })
-    }
-    return this.http.delete<RetornoCategorias>(`http://localhost:3001/api/categorias/${id}`, options);
+    return this.http.delete<RetornoCategorias>(`http://localhost:3001/api/categorias/${id}`);
   }
 
   criarCategoria(categoria: string): Observable<RetornoCategorias> {
-    let options = {
-      headers: new HttpHeaders({
-        'Access-Control-Allow-Origin': '*',
-        "Access-Control-Allow-Headers": "Origin, X-Requested-With, Content-Type, Accept, Authorization, Cookie"
-      })
-    }
-    return this.http.post<RetornoCategorias>(`http://localhost:3001/api/categorias/`, {categoria: categoria}, options);
+    return this.http.post<RetornoCategorias>(`http://localhost:3001/api/categorias/`, {categoria: categoria});
   }
 
   alterarCategoria(categoria: string, id: string): Observable<Retorno> {
-    let options = {
-      headers: new HttpHeaders({
-        'Access-Control-Allow-Origin': '*',
-        "Access-Control-Allow-Headers": "Origin, X-Requested-With, Content-Type, Accept, Authorization, Cookie"
-      })
-    }
-    return this.http.put<Retorno>(`http://localhost:3001/api/produto-categoria/`, {categoria: categoria, id: id}, options);
+    return this.http.put<Retorno>(`http://localhost:3001/api/produto-categoria/`, {categoria: categoria, id: id});
   }
 
 }

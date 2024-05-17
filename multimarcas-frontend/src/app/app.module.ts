@@ -11,7 +11,7 @@ import { GestaoComponent } from './components/gestao/gestao.component';
 import { PainelProdutosComponent } from './components/painel-produtos/painel-produtos.component';
 import { TopBarComponent } from './components/top-bar/top-bar.component';
 import { ReactiveFormsModule, FormsModule, FormGroup } from '@angular/forms';
-import { HttpClientModule } from '@angular/common/http';
+import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { authGuard } from './guard/auth.guard'
 import { AuthService } from './services/auth.service';
 import { PainelProdutosService } from './services/painel-produtos.service';
@@ -26,8 +26,10 @@ import { CartComponent } from './components/icons/cart/cart.component';
 import { MatBadgeModule } from '@angular/material/badge';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import { MatCardModule } from '@angular/material/card';
-import {MatListModule} from '@angular/material/list';
-import {MatButtonModule} from '@angular/material/button';
+import { MatListModule } from '@angular/material/list';
+import { MatButtonModule } from '@angular/material/button';
+import { AlterarSenhaComponent } from './components/modals/alterar-senha/alterar-senha.component';
+import { InterceptorInterceptor } from './interceptors/interceptor.interceptor';
 
 @NgModule({
   imports: [
@@ -62,7 +64,9 @@ import {MatButtonModule} from '@angular/material/button';
     LoadingComponent,
     CarrinhoComponent,
     CartComponent,
+    AlterarSenhaComponent
   ],
+  providers: [{ provide: HTTP_INTERCEPTORS, useClass: InterceptorInterceptor, multi: true }],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

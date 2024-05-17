@@ -9,6 +9,7 @@ import { Categoria, ProdutosPainel, ProdutosService } from 'src/app/services/pro
 import { Produto } from 'src/app/services/produtos.service';
 import { produtos } from '../lista-produtos/lista-produtos.component';
 import { ListaProdutosComponent } from '../lista-produtos/lista-produtos.component';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-painel-produtos',
@@ -20,24 +21,30 @@ export class PainelProdutosComponent {
   constructor(
     @Inject(DOCUMENT) document: Document,
     private painelProdutosService: PainelProdutosService,
-    private produtosService: ProdutosService
+    private produtosService: ProdutosService,
   ) {
   }
+  private subs = new Subscription()
 
   ngOnInit() {
     this.listarProdutosPainel()
+  }
+  ngOnDestroy() {
+    this.subs.unsubscribe()
   }
   categorias: Categoria[] = []
   produtos: ProdutosPainel[] = []
   lista: ProdutosPainel[] = []
 
   listarProdutosPainel() {
-    this.produtosService.getAllPannel().subscribe(retorno => {
-      if (retorno.status == 'sucesso') {
-        this.lista = retorno.mensagem
-        this.produtos = retorno.mensagem
-      }
-    })
+    this.subs.add(
+      this.produtosService.getAllPannel().subscribe(retorno => {
+        if (retorno.status == 'sucesso') {
+          this.lista = retorno.mensagem
+          this.produtos = retorno.mensagem
+        }
+      })
+    )
   }
 
   filtrarProdutos(texto: string) {
@@ -68,38 +75,44 @@ export class PainelProdutosComponent {
         categoria: this.formularioProduto.value.categoria!,
         arquivo: this.imagem.target?.files?.[0],
       }
-      this.painelProdutosService.cadastrarProduto(formPost).subscribe((resultado) => {
-        if (resultado.status == "sucesso") {
-          alert(`${this.formularioProduto.value.nomeDoProduto!} cadastrado com sucesso.`)
-          this.listarProdutosPainel()
-          this.formularioProduto.reset()
-          this.fechar()
-        } else {
-          alert(resultado.mensagem)
-        }
-      })
+      this.subs.add(
+        this.painelProdutosService.cadastrarProduto(formPost).subscribe((resultado) => {
+          if (resultado.status == "sucesso") {
+            alert(`${this.formularioProduto.value.nomeDoProduto!} cadastrado com sucesso.`)
+            this.listarProdutosPainel()
+            this.formularioProduto.reset()
+            this.fechar()
+          } else {
+            alert(resultado.mensagem)
+          }
+        })
+      )
     }
   }
 
   excluirProduto(produto: ProdutosPainel) {
     if (confirm(`O produto ${produto.nome} será excluido! Tem certeza?`)) {
-      this.painelProdutosService.excluirProduto(produto.id).subscribe(resultado => {
-        if (resultado.status == "sucesso") {
-          this.listarProdutosPainel()
-          alert("Produto exclúido com sucesso!")
-        } else {
-          alert(resultado.mensagem)
-        }
-      })
+      this.subs.add(
+        this.painelProdutosService.excluirProduto(produto.id).subscribe(resultado => {
+          if (resultado.status == "sucesso") {
+            this.listarProdutosPainel()
+            alert("Produto excluído com sucesso!")
+          } else {
+            alert(resultado.mensagem)
+          }
+        })
+      )
     }
   }
 
   abrir() {
-    this.produtosService.getCategorias().subscribe(e => {
-      if (e.status == 'sucesso') {
-        this.categorias = e.mensagem
-      }
-    })
+    this.subs.add(
+      this.produtosService.getCategorias().subscribe(e => {
+        if (e.status == 'sucesso') {
+          this.categorias = e.mensagem
+        }
+      })
+    )
     document.getElementById('modalNovoProduto')?.classList.add('d-block')
   }
 
@@ -126,17 +139,19 @@ export class PainelProdutosComponent {
   submitPreco() {
     const idProduto = document.getElementById('idProdutoAltPreco')!.textContent
     const novoPreco = this.formularioNovoPreco.value.novoPreco
-    this.painelProdutosService.alterarPrecoProduto(idProduto!, novoPreco!).subscribe(resultado => {
-      if (resultado.status == "sucesso") {
-        document.getElementById('modalAlterarPrecoProduto')?.classList.remove('d-block')
-        document.getElementById('idProdutoAltPreco')!.textContent = ``
-        this.formularioNovoPreco.reset()
-        alert("O preço do produto foi alterado com sucesso!")
-        this.listarProdutosPainel()
-      } else {
-        alert(resultado.mensagem)
-      }
-    })
+    this.subs.add(
+      this.painelProdutosService.alterarPrecoProduto(idProduto!, novoPreco!).subscribe(resultado => {
+        if (resultado.status == "sucesso") {
+          document.getElementById('modalAlterarPrecoProduto')?.classList.remove('d-block')
+          document.getElementById('idProdutoAltPreco')!.textContent = ``
+          this.formularioNovoPreco.reset()
+          alert("O preço do produto foi alterado com sucesso!")
+          this.listarProdutosPainel()
+        } else {
+          alert(resultado.mensagem)
+        }
+      })
+    )
   }
 
   modalNovoPreco(produto: ProdutosPainel) {
@@ -152,11 +167,13 @@ export class PainelProdutosComponent {
     categoria: new FormControl('default', [Validators.required, Validators.pattern('[0-9]')]),
   })
   modalNovaCategoria(produto: ProdutosPainel) {
-    this.produtosService.getCategorias().subscribe(e => {
-      if (e.status == 'sucesso') {
-        this.categorias = e.mensagem
-      }
-    })
+    this.subs.add(
+      this.produtosService.getCategorias().subscribe(e => {
+        if (e.status == 'sucesso') {
+          this.categorias = e.mensagem
+        }
+      })
+    )
     document.getElementById('idProdutoAltCategoria')!.textContent = `${produto.id} - ${produto.nome}`
     this.idAltCategoria = produto.id
     document.getElementById('modalAlterarCategoriaProduto')?.classList.add('d-block')
@@ -176,7 +193,7 @@ export class PainelProdutosComponent {
           this.listarProdutosPainel()
           this.formularioNovaCategoria.reset()
           alert("Categoria alterada!")
-          
+
         }
       }, error => {
         alert(JSON.stringify(error.message))
