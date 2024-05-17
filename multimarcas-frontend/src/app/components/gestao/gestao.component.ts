@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { GestaoService } from 'src/app/services/gestao.service';
+import { UtilsService } from 'src/app/services/utils.service';
 @Component({
   selector: 'app-gestao',
   templateUrl: './gestao.component.html',
@@ -9,7 +10,7 @@ import { GestaoService } from 'src/app/services/gestao.service';
 export class GestaoComponent {
   constructor(
     private gestaoService: GestaoService,
-
+    private utils: UtilsService
   ) {
 
   }
@@ -36,8 +37,10 @@ export class GestaoComponent {
   }
 
   ngOnInit() {
+    this.utils.carregandoSubject.next(true)
     this.subs.add(
       this.gestaoService.buscarWhatsapp().subscribe(retorno => {
+        this.utils.carregandoSubject.next(false)
         if (retorno.status == "sucesso") {
           this.whatsapp = retorno.mensagem
         } else {
@@ -53,14 +56,20 @@ export class GestaoComponent {
       if (telefone == '' || telefone == null) {
         alert("O número não pode estar em branco.")
       } else {
+        this.utils.carregandoSubject.next(true)
         this.subs.add(
           this.gestaoService.criarNumeroWhatsapp(telefone!).subscribe(retorno => {
+            this.utils.carregandoSubject.next(false)
             if (retorno.status == "sucesso") {
               alert("Número cadastrado.")
               location.reload()
             } else {
               alert(retorno.mensagem)
             }
+          },
+          error => {
+            alert(JSON.stringify(error.name))
+            this.utils.carregandoSubject.next(false)
           })
         )
       }
@@ -73,14 +82,20 @@ export class GestaoComponent {
       if (telefone == '' || telefone == null) {
         alert("O número não pode estar em branco.")
       } else {
+        this.utils.carregandoSubject.next(true)
         this.subs.add(
           this.gestaoService.alterarNumeroWhatsapp(telefone!).subscribe(retorno => {
+            this.utils.carregandoSubject.next(false)
             if (retorno.status == "sucesso") {
               alert("Número alterado.")
               location.reload()
             } else {
               alert(retorno.mensagem)
             }
+          },
+          error => {
+            alert(JSON.stringify(error.name))
+            this.utils.carregandoSubject.next(false)
           })
         )
       }

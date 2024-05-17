@@ -2,6 +2,7 @@ import { Component, EventEmitter, Output } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Subscription } from 'rxjs';
 import { Categoria, ProdutosService } from 'src/app/services/produtos.service';
+import { UtilsService } from 'src/app/services/utils.service';
 
 @Component({
   selector: 'app-categorias',
@@ -13,6 +14,7 @@ export class CategoriasComponent {
 
   constructor(
     private produtosService: ProdutosService,
+    private utils: UtilsService
   ) { }
   private subs = new Subscription()
   formularioCriarCategoria = new FormGroup({
@@ -23,8 +25,10 @@ export class CategoriasComponent {
   }
   submitNewCategoria() {
     if (this.formularioCriarCategoria.valid) {
+      this.utils.carregandoSubject.next(true)
       this.subs.add(
         this.produtosService.criarCategoria(this.formularioCriarCategoria!.controls['categoria']!.value!).subscribe(e => {
+          this.utils.carregandoSubject.next(false)
           if (e.status == 'sucesso') {
             alert("Categoria cadastrada.")
             this.listarCategorias()
@@ -32,7 +36,11 @@ export class CategoriasComponent {
           } else {
             alert("Falha ao cadastrar a categoria")
           }
-        })
+        },
+          error => {
+            alert(JSON.stringify(error.name))
+            this.utils.carregandoSubject.next(false)
+          })
       )
     }
   }
@@ -51,12 +59,18 @@ export class CategoriasComponent {
     this.modalCriarCategoria = false;
   }
   listarCategorias() {
+    this.utils.carregandoSubject.next(true)
     this.subs.add(
       this.produtosService.getCategorias().subscribe(e => {
+        this.utils.carregandoSubject.next(false)
         if (e.status == 'sucesso') {
           this.categorias = e.mensagem
         }
-      })
+      },
+        error => {
+          alert(JSON.stringify(error.name))
+          this.utils.carregandoSubject.next(false)
+        })
     )
   }
   ngOnInit() {
@@ -64,13 +78,19 @@ export class CategoriasComponent {
   }
   deletarCategoria(categoria: Categoria) {
     if (confirm(`Tem certeza que deseja deletar a categoria "${categoria.categoria}"?`)) {
+      this.utils.carregandoSubject.next(true)
       this.subs.add(
         this.produtosService.deleteCategoria(categoria.id.toString()).subscribe(e => {
+          this.utils.carregandoSubject.next(false)
           if (e.status == 'sucesso') {
             this.listarCategorias()
             alert("Categoria excluída.")
           }
-        })
+        },
+          error => {
+            alert(JSON.stringify(error.name))
+            this.utils.carregandoSubject.next(false)
+          })
       )
     }
   }

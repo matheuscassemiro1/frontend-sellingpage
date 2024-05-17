@@ -10,6 +10,7 @@ import { Produto } from 'src/app/services/produtos.service';
 import { produtos } from '../lista-produtos/lista-produtos.component';
 import { ListaProdutosComponent } from '../lista-produtos/lista-produtos.component';
 import { Subscription } from 'rxjs';
+import { UtilsService } from 'src/app/services/utils.service';
 
 @Component({
   selector: 'app-painel-produtos',
@@ -22,6 +23,7 @@ export class PainelProdutosComponent {
     @Inject(DOCUMENT) document: Document,
     private painelProdutosService: PainelProdutosService,
     private produtosService: ProdutosService,
+    private utils: UtilsService
   ) {
   }
   private subs = new Subscription()
@@ -37,13 +39,19 @@ export class PainelProdutosComponent {
   lista: ProdutosPainel[] = []
 
   listarProdutosPainel() {
+    this.utils.carregandoSubject.next(true)
     this.subs.add(
       this.produtosService.getAllPannel().subscribe(retorno => {
+        this.utils.carregandoSubject.next(false)
         if (retorno.status == 'sucesso') {
           this.lista = retorno.mensagem
           this.produtos = retorno.mensagem
         }
-      })
+      },
+        error => {
+          alert(JSON.stringify(error.name))
+          this.utils.carregandoSubject.next(false)
+        })
     )
   }
 
@@ -75,6 +83,7 @@ export class PainelProdutosComponent {
         categoria: this.formularioProduto.value.categoria!,
         arquivo: this.imagem.target?.files?.[0],
       }
+      this.utils.carregandoSubject.next(true)
       this.subs.add(
         this.painelProdutosService.cadastrarProduto(formPost).subscribe((resultado) => {
           if (resultado.status == "sucesso") {
@@ -85,33 +94,49 @@ export class PainelProdutosComponent {
           } else {
             alert(resultado.mensagem)
           }
-        })
+        },
+          error => {
+            alert(JSON.stringify(error.name))
+            this.utils.carregandoSubject.next(false)
+          })
       )
     }
   }
 
   excluirProduto(produto: ProdutosPainel) {
     if (confirm(`O produto ${produto.nome} será excluido! Tem certeza?`)) {
+      this.utils.carregandoSubject.next(true)
       this.subs.add(
         this.painelProdutosService.excluirProduto(produto.id).subscribe(resultado => {
+          this.utils.carregandoSubject.next(false)
           if (resultado.status == "sucesso") {
             this.listarProdutosPainel()
             alert("Produto excluído com sucesso!")
           } else {
             alert(resultado.mensagem)
           }
-        })
+        },
+          error => {
+            alert(JSON.stringify(error.name))
+            this.utils.carregandoSubject.next(false)
+          })
       )
     }
   }
 
   abrir() {
+    this.utils.carregandoSubject.next(true)
     this.subs.add(
       this.produtosService.getCategorias().subscribe(e => {
+        this.utils.carregandoSubject.next(false)
         if (e.status == 'sucesso') {
           this.categorias = e.mensagem
         }
-      })
+      },
+        error => {
+          alert(JSON.stringify(error.name))
+          this.utils.carregandoSubject.next(false)
+        })
     )
     document.getElementById('modalNovoProduto')?.classList.add('d-block')
   }
@@ -139,8 +164,10 @@ export class PainelProdutosComponent {
   submitPreco() {
     const idProduto = document.getElementById('idProdutoAltPreco')!.textContent
     const novoPreco = this.formularioNovoPreco.value.novoPreco
+    this.utils.carregandoSubject.next(true)
     this.subs.add(
       this.painelProdutosService.alterarPrecoProduto(idProduto!, novoPreco!).subscribe(resultado => {
+        this.utils.carregandoSubject.next(false)
         if (resultado.status == "sucesso") {
           document.getElementById('modalAlterarPrecoProduto')?.classList.remove('d-block')
           document.getElementById('idProdutoAltPreco')!.textContent = ``
@@ -150,7 +177,11 @@ export class PainelProdutosComponent {
         } else {
           alert(resultado.mensagem)
         }
-      })
+      },
+        error => {
+          alert(JSON.stringify(error.name))
+          this.utils.carregandoSubject.next(false)
+        })
     )
   }
 
@@ -167,12 +198,17 @@ export class PainelProdutosComponent {
     categoria: new FormControl('default', [Validators.required, Validators.pattern('[0-9]')]),
   })
   modalNovaCategoria(produto: ProdutosPainel) {
+    this.utils.carregandoSubject.next(true)
     this.subs.add(
       this.produtosService.getCategorias().subscribe(e => {
         if (e.status == 'sucesso') {
           this.categorias = e.mensagem
         }
-      })
+      },
+        error => {
+          alert(JSON.stringify(error.name))
+          this.utils.carregandoSubject.next(false)
+        })
     )
     document.getElementById('idProdutoAltCategoria')!.textContent = `${produto.id} - ${produto.nome}`
     this.idAltCategoria = produto.id
@@ -185,19 +221,22 @@ export class PainelProdutosComponent {
   }
   submitCategoria() {
     if (this.formularioNovaCategoria.valid) {
-      this.produtosService.alterarCategoria(this.formularioNovaCategoria!.controls['categoria']!.value!, this.idAltCategoria).subscribe(response => {
-        if (response.status == 'sucesso') {
-          this.idAltCategoria = undefined
-          document.getElementById('modalAlterarCategoriaProduto')?.classList.remove('d-block')
-          document.getElementById('idProdutoAltCategoria')!.textContent = ``
-          this.listarProdutosPainel()
-          this.formularioNovaCategoria.reset()
-          alert("Categoria alterada!")
+      this.utils.carregandoSubject.next(true)
+      this.subs.add(
+        this.produtosService.alterarCategoria(this.formularioNovaCategoria!.controls['categoria']!.value!, this.idAltCategoria).subscribe(response => {
+          this.utils.carregandoSubject.next(false)
+          if (response.status == 'sucesso') {
+            this.idAltCategoria = undefined
+            document.getElementById('modalAlterarCategoriaProduto')?.classList.remove('d-block')
+            document.getElementById('idProdutoAltCategoria')!.textContent = ``
+            this.listarProdutosPainel()
+            this.formularioNovaCategoria.reset()
+            alert("Categoria alterada!")
 
-        }
-      }, error => {
-        alert(JSON.stringify(error.message))
-      })
+          }
+        }, error => {
+          alert(JSON.stringify(error.message))
+        }))
     }
   }
 
@@ -206,15 +245,22 @@ export class PainelProdutosComponent {
       alert('Selecione uma imagem')
     }
     else {
-      this.painelProdutosService.alterarImagem(this.idAltFoto, this.novaImagem.target.files[0]).subscribe(resultado => {
-        if (resultado.status == "sucesso") {
-          this.listarProdutosPainel()
-          alert("A imagem do produto foi alterada com sucesso!")
-          location.reload()
-        } else {
-          alert(resultado.mensagem)
-        }
-      })
+      this.utils.carregandoSubject.next(true)
+      this.subs.add(
+        this.painelProdutosService.alterarImagem(this.idAltFoto, this.novaImagem.target.files[0]).subscribe(resultado => {
+          this.utils.carregandoSubject.next(false)
+          if (resultado.status == "sucesso") {
+            this.listarProdutosPainel()
+            alert("A imagem do produto foi alterada com sucesso!")
+            location.reload()
+          } else {
+            alert(resultado.mensagem)
+          }
+        },
+          error => {
+            alert(JSON.stringify(error.name))
+            this.utils.carregandoSubject.next(false)
+          }))
     }
   }
 

@@ -4,8 +4,8 @@
     <span class="mt-0" *ngIf="categorias!.length! > 0 && !carregando">Filtro por Categoria</span>
   </div>
   <div class="d-flex justify-content-center mb-2 gap-2">
-    <mat-button-toggle-group appearance="legacy" aria-label="Categorias">
-      <mat-button-toggle checked="true" (click)="listarProdutos()">TODOS</mat-button-toggle>
+    <mat-button-toggle-group appearance="legacy" aria-label="Categorias" [(ngModel)]="selected">
+      <mat-button-toggle value="todos" [checked]="pressionado" (click)="listarProdutos()">TODOS</mat-button-toggle>
       <mat-button-toggle *ngFor="let categoria of categorias" (click)="listarProdutosCategoria(categoria.id.toString())">{{categoria.categoria | uppercase}}</mat-button-toggle>
     </mat-button-toggle-group>
   </div>
@@ -85,7 +85,6 @@
   </div>
   
 </ng-template>
-<app-loading *ngIf="carregando"></app-loading>
 <app-carrinho *ngIf="carrinhoComItems()"></app-carrinho>
 <app-footer></app-footer>
 </body>

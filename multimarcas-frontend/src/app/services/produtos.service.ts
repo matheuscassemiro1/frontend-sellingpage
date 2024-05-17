@@ -1,42 +1,46 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { Resultado } from './auth.service';
+import { UtilsService } from './utils.service';
 @Injectable({
   providedIn: 'root'
 })
 
 export class ProdutosService {
 
-  constructor(private http: HttpClient) { }
+  constructor(
+    private http: HttpClient,
+    private utils: UtilsService
+
+  ) { }
 
   getAll(page: number): Observable<Retorno> {
-    return this.http.get<Retorno>(`http://localhost:3001/api/produtos?page=${page}`);
+    return this.http.get<Retorno>(`${this.utils.apiUrl}/api/produtos?page=${page}`);
   }
 
   getAllCategory(categoria: string): Observable<Retorno> {
-    return this.http.get<Retorno>(`http://localhost:3001/api/produtos/${categoria}`);
+    return this.http.get<Retorno>(`${this.utils.apiUrl}/api/produtos/${categoria}`);
   }
 
   getAllPannel(): Observable<RetornoPainel> {
-    return this.http.get<RetornoPainel>('http://localhost:3001/api/produtos-painel');
+    return this.http.get<RetornoPainel>(`${this.utils.apiUrl}/api/produtos-painel`);
   }
 
   getCategorias(): Observable<RetornoCategorias> {
   
-    return this.http.get<RetornoCategorias>('http://localhost:3001/api/categorias');
+    return this.http.get<RetornoCategorias>(`${this.utils.apiUrl}/api/categorias`);
   }
 
   deleteCategoria(id: string): Observable<RetornoCategorias> {
-    return this.http.delete<RetornoCategorias>(`http://localhost:3001/api/categorias/${id}`);
+    return this.http.delete<RetornoCategorias>(`${this.utils.apiUrl}/api/categorias/${id}`);
   }
 
   criarCategoria(categoria: string): Observable<RetornoCategorias> {
-    return this.http.post<RetornoCategorias>(`http://localhost:3001/api/categorias/`, {categoria: categoria});
+    return this.http.post<RetornoCategorias>(`${this.utils.apiUrl}/api/categorias/`, {categoria: categoria});
   }
 
   alterarCategoria(categoria: string, id: string): Observable<Retorno> {
-    return this.http.put<Retorno>(`http://localhost:3001/api/produto-categoria/`, {categoria: categoria, id: id});
+    return this.http.put<Retorno>(`${this.utils.apiUrl}/api/produto-categoria/`, {categoria: categoria, id: id});
   }
 
 }

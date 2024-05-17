@@ -6,7 +6,7 @@ import { Subscriber, Subscription } from 'rxjs';
 
 export const authGuard: CanActivateFn = (route: ActivatedRouteSnapshot, state: RouterStateSnapshot) => {
   // Lógica de autenticação, por exemplo, verificar se o usuário está logado
-  const token: string | null = inject(AuthService).obterToken()
+  const token: string | null = localStorage.getItem('token')
   const isAuthenticated = inject(AuthService).validarAutenticacao().subscribe((resultado) => {
     if (resultado.status == "sucesso") {
       return true;

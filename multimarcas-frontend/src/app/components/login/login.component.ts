@@ -5,6 +5,7 @@ import { DOCUMENT } from '@angular/common'
 import { Validators } from '@angular/forms';
 import { AuthService } from 'src/app/services/auth.service';
 import { Subscription } from 'rxjs';
+import { UtilsService } from 'src/app/services/utils.service';
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
@@ -14,6 +15,7 @@ export class LoginComponent {
   constructor(
     @Inject(DOCUMENT) document: Document,
     private authService: AuthService,
+    private utils: UtilsService
   ) {
   }
   private subs = new Subscription()
@@ -43,14 +45,21 @@ export class LoginComponent {
       status: string,
       mensagem: string
     }
+    this.utils.carregandoSubject.next(true)
+    console.log(this.formularioLogin)
     this.subs.add(
-      this.authService.tentarLogin(this.formularioLogin.value).subscribe((resultado) => {
+      this.authService.tentarLogin(this.formularioLogin!.controls['login']!.value!, this.formularioLogin!.controls['senha']!.value!).subscribe((resultado) => {
+        this.utils.carregandoSubject.next(false)
         if (resultado.status == "falha") {
           alert(resultado.mensagem)
         } else {
           localStorage.setItem('token', resultado.mensagem)
           location.href = 'gestao';
         }
+      },
+      error => {
+        alert(JSON.stringify(error.name))
+        this.utils.carregandoSubject.next(false)
       })
     )
   }
