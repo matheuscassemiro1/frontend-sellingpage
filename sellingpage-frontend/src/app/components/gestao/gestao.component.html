@@ -1,0 +1,49 @@
+<app-top-bar></app-top-bar>
+
+<body>
+    <div class="d-flex justify-content-center gap-3 mt-2">
+        <div>
+            <div class="card flex-row mb-4 ml-1 px-1 text-center">
+                <div class="card-body ">
+                    <h5 class="card-title fs-5">Produtos</h5>
+                    <h6 class="card-subtitle mb-2 text-muted" style="font-size: 1rem;">Gestão e visualização de produtos</h6>
+                    <button class="btn btn-info mx-2" routerLink="/produtos">Produtos</button>
+                    <button class="btn btn-secondary" (click)="abrirModalCategorias()">Categorias</button>
+                </div>
+            </div>
+
+        </div>
+        <div>
+            <div class="card flex-row mb-4 ml-1 px-2 text-center">
+                <div class="card-body">
+                    <h5 class="card-title fs-5">Whatsapp para Redirecionar Pedidos</h5>
+                    <h6 class="card-subtitle mb-2 text-muted" style="font-size: 1rem;">Número: <b>{{whatsapp}}</b></h6>
+                    <div *ngIf="whatsapp == 'N/A' else existeNumero">
+                        <button class="btn btn-success m-2" (click)="cadastrarNovoWhatsapp()">Criar</button>
+                    </div>
+                    <ng-template #existeNumero>
+                        <button class="btn btn-warning m-2" (click)="alterarNumeroWhatsapp()">Alterar</button>
+                    </ng-template>
+
+                </div>
+            </div>
+        </div>
+
+        <div>
+            <div class="card flex-row mb-4 ml-1 px-1 text-center">
+                <div class="card-body ">
+                    <h5 class="card-title fs-5">Admin</h5>
+                    <h6 class="card-subtitle mb-2 text-muted" style="font-size: 1rem;">Gestão do usuário</h6>
+                    <button class="btn btn-secondary" (click)="abrirModalAlterarSenha()">Alterar senha</button>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+
+<app-categorias *ngIf="modalCategorias" (fecharModal)="fecharModalCategorias()"></app-categorias>
+
+</body>
+<app-alterar-senha *ngIf="modalAlterarSenha" (fecharModal)="fecharModalAlterarSenha()"></app-alterar-senha>
+<app-footer></app-footer>

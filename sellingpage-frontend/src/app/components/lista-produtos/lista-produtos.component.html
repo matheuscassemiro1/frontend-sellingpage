@@ -1,0 +1,92 @@
+<app-header (filtrarProduto)="onFiltrarProduto($event)"></app-header>
+<body>
+  <div class="d-flex justify-content-center">
+    <span class="mt-0" *ngIf="categorias!.length! > 0 && !carregando">Filtro por Categoria</span>
+  </div>
+  <div class="d-flex justify-content-center mb-2 gap-2">
+    <mat-button-toggle-group appearance="legacy" aria-label="Categorias" [(ngModel)]="selected">
+      <mat-button-toggle value="todos" [checked]="pressionado" (click)="listarProdutos()">TODOS</mat-button-toggle>
+      <mat-button-toggle *ngFor="let categoria of categorias" (click)="listarProdutosCategoria(categoria.id.toString())">{{categoria.categoria | uppercase}}</mat-button-toggle>
+    </mat-button-toggle-group>
+  </div>
+  <div *ngIf="lista.length <= 0; else existemProdutos"
+  style="display: flex; flex: 1; align-items: center; justify-content: center">
+  <h2>Não há produtos a serem exibidos.</h2>
+</div>
+
+<ng-template #existemProdutos>
+  <div class="row mb-0 mt-1" style="max-width: 99%; margin-left: 0.5vw;">
+    
+    <hr />
+    <div style="
+        display: flex;
+        justify-content: center;
+        margin: 0 auto;
+        flex-direction: row;
+        flex-wrap: wrap;
+        gap: 10px;
+      ">
+      <div *ngFor="let produto of lista" class="divProduto">
+        <div class="card mb-0 shadow-sm" style="height: 100%; align-items: center">
+          <h3 class="mb-0 mt-2" style="text-align: center; grid-row: 1">
+            <span class="text" style="font-family: cursive">{{
+              produto.nome
+              }}</span>
+          </h3>
+          <div class="imgProduto">
+            <img data-src="{{ produto.imagem }}" alt="Thumbnail [200x250]"
+            [src]="produto.imagem != null ? 'http://localhost:3001/img/' + produto.imagem : 'assets/default.jpeg'" class="tamanhoImg" />
+          </div>
+          <div class="card-body d-grid" style="align-items: end">
+            <div style="
+                display: flex;
+                flex-wrap: wrap;
+                gap: 10px;
+                justify-content: center;
+                align-items: center;
+              ">
+              <div style="
+                  display: flex;
+                  justify-content: center;
+                  align-items: center;
+                ">
+                <button class="btn" (click)="
+                    produto.quantidade == 1
+                      ? (produto.quantidade = 1)
+                      : (produto.quantidade = produto.quantidade - 1)
+                  ">
+                  -
+                </button>
+                <input type="number" disabled [value]="produto.quantidade"
+                  style="width: 20%; min-width: 25%; text-align: center" />
+                <button class="btn" (click)="produto.quantidade = produto.quantidade + 1">
+                  +
+                </button>
+              </div>
+              <span class="shadow-lg p-1 bg-success rounded" style="
+                  font-family: serif;
+                  font-size: large;
+                  font-weight: bold;
+                  color: rgb(255, 255, 255);
+                  font-family: cursive;
+                ">R$
+                {{
+                produto.preco.toFixed(2).toString().replace(".", ",")
+                }}</span>
+              <button type="button" (click)="adicionarAoCarrinho(produto)" style="font-size: 12px" class="btn btn-info">
+                Adicionar ao carrinho
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+  
+</ng-template>
+<app-carrinho *ngIf="carrinhoComItems()"></app-carrinho>
+<app-footer></app-footer>
+</body>
+
+

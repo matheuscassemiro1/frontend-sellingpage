@@ -1,0 +1,47 @@
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+body {
+  margin-bottom: 100px;
+}
+
+.imgProduto {
+  width: 200px;
+  height: 200px;
+  overflow: hidden;
+}
+
+.tamanhoImg {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+.divProduto {
+  flex: 0 0 23%;
+}
+
+@media (max-width: 500px) {
+  .divProduto {
+    flex: 0 0 45%;
+  }
+
+  .imgProduto {
+    max-width: 150px;
+    height: 150px;
+    overflow: hidden;
+  }
+}
+
+mat-button-toggle-group {
+  background-color: #F05D23;
+}
+mat-button-toggle {
+  color: rgb(37, 37, 37);
+}
+mat-snack-bar{
+  color: #F05D23;
+}

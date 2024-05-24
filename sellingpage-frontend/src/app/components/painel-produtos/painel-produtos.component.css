@@ -1,0 +1,47 @@
+.header {
+
+    position: absolute;
+    display: block;
+    width: 100vw;
+    height: 10rem;
+    background-size: cover;
+
+}
+
+.background-img {
+    position: absolute;
+    display: block;
+    width: 100vw;
+    height: 100vw;
+    background-size: cover;
+}
+
+.blur {
+
+    backdrop-filter: blur(5px);
+    height: 100vh;
+    width: 100%;
+}
+
+
+.container {
+    font-family: arial;
+    font-size: 24px;
+    margin: 25px;
+}
+
+.child {
+    position: relative;
+    width: 50px;
+    height: 50px;
+    filter: drop-shadow(0 0 1.75rem rgb(255, 255, 255));
+    /* Center horizontally*/
+    margin: 0 auto;
+    margin-bottom: 6rem;
+}
+
+.centralizar {
+    position: relative;
+    /* Center horizontally*/
+    margin: 0 auto;
+}

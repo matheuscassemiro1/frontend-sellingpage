@@ -3,10 +3,10 @@ const app = express();
 
 const PORT = process.env.PORT || 8080;
 
-app.use(express.static(__dirname + '/multimarcas-frontend/dist/multimarcas-frontend'));
+app.use(express.static(__dirname + '/sellingpage-frontend/dist/sellingpage-frontend'));
 
 app.get('/*', (req, res) => {
-    res.sendFile(__dirname + '/multimarcas-frontend/dist/multimarcas-frontend/index.html')
+    res.sendFile(__dirname + '/sellingpage-frontend/dist/sellingpage-frontend/index.html')
 });
 
 

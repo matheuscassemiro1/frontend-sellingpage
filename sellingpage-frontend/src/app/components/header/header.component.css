@@ -1,0 +1,15 @@
+.barraBusca{
+
+}
+
+.mobile{
+
+}
+@media (max-width: 500px){
+    .barraBusca{
+        width: 100%;
+    }
+    .mobile{
+        margin-bottom: 2%;
+    }
+}
