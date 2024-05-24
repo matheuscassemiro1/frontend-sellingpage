@@ -6,12 +6,12 @@ import { Subscriber, Subscription } from 'rxjs';
 
 export const authGuard: CanActivateFn = (route: ActivatedRouteSnapshot, state: RouterStateSnapshot) => {
   // Lógica de autenticação, por exemplo, verificar se o usuário está logado
-  const token: string | null = inject(AuthService).obterToken()
-  const isAuthenticated = inject(AuthService).validarAutenticacao(token).subscribe((resultado) => {
+  const token: string | null = localStorage.getItem('token')
+  const isAuthenticated = inject(AuthService).validarAutenticacao().subscribe((resultado) => {
     if (resultado.status == "sucesso") {
       return true;
     } else {
-      window.location.href = '/login';
+      //window.location.href = '/login';
       return false;
     }
   });
@@ -19,7 +19,7 @@ export const authGuard: CanActivateFn = (route: ActivatedRouteSnapshot, state: R
   if (isAuthenticated) {
     return true;
   } else {
-    window.location.href = '/login'; 
+    //window.location.href = '/login'; 
     return false;
   }
 };

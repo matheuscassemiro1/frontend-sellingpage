@@ -1,0 +1,8 @@
+.powered{
+    position: absolute;
+    margin-left: 1%;
+    font-size: smaller;
+    color: gray;
+    z-index: -1;
+    margin-bottom: 1px;
+}

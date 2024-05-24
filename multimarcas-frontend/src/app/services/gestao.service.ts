@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { Resultado } from './auth.service';
-import { AuthService } from './auth.service';
+import { UtilsService } from './utils.service';
 
 @Injectable({
   providedIn: 'root'
@@ -11,65 +11,22 @@ export class GestaoService {
 
   constructor(
     private http: HttpClient,
-    private authService: AuthService) { }
+    private utils: UtilsService
+  ) { }
 
   buscarWhatsapp(): Observable<Resultado> {
-    let options = {
-      headers: new HttpHeaders({
-        'Access-Control-Allow-Origin': '*',
-        "Access-Control-Allow-Headers": "Origin, X-Requested-With, Content-Type, Accept, Authorization, Cookie"
-      })
-    }
-    return this.http.get<Resultado>('http://localhost:3001/api/whatsapp', options);
+    return this.http.get<Resultado>(`${this.utils.apiUrl}/api/whatsapp`);
   }
 
   criarNumeroWhatsapp(whatsapp: string): Observable<Resultado> {
-    let token = this.authService.obterToken()
-    if (token) {
-      let options = {
-        headers: new HttpHeaders({
-          'Access-Control-Allow-Origin': '*',
-          "Access-Control-Allow-Headers": "Origin, X-Requested-With, Content-Type, Accept, Authorization, Cookie",
-          "Authorization": token
-        })
-      }
-      
-      return this.http.post<Resultado>('http://localhost:3001/api/whatsapp', { whatsapp: whatsapp }, options);
-    }
-
-    else {
-      let options = {
-        headers: new HttpHeaders({
-          'Access-Control-Allow-Origin': '*',
-          "Access-Control-Allow-Headers": "Origin, X-Requested-With, Content-Type, Accept, Authorization, Cookie",
-        })
-      }
-      return this.http.post<Resultado>('http://localhost:3001/api/whatsapp', { whatsapp: whatsapp }, options);
-    }
+    return this.http.post<Resultado>(`${this.utils.apiUrl}/api/whatsapp`, { whatsapp: whatsapp });
   }
 
   alterarNumeroWhatsapp(whatsapp: string): Observable<Resultado> {
-    let token = this.authService.obterToken()
-    if (token) {
-      let options = {
-        headers: new HttpHeaders({
-          'Access-Control-Allow-Origin': '*',
-          "Access-Control-Allow-Headers": "Origin, X-Requested-With, Content-Type, Accept, Authorization, Cookie",
-          'Authorization': token
-        })
-      }
-      return this.http.put<Resultado>('http://localhost:3001/api/whatsapp', { whatsapp: whatsapp }, options);
-    }
+    return this.http.put<Resultado>(`${this.utils.apiUrl}/api/whatsapp`, { whatsapp: whatsapp });
+  }
 
-    else {
-      let options = {
-        headers: new HttpHeaders({
-          'Access-Control-Allow-Origin': '*',
-          "Access-Control-Allow-Headers": "Origin, X-Requested-With, Content-Type, Accept, Authorization, Cookie",
-        })
-      }
-
-      return this.http.put<Resultado>('http://localhost:3001/api/whatsapp', { whatsapp: whatsapp }, options);
-    }
+  alterarSenhaAdmin(senha: string, token: string): Observable<Resultado> {
+    return this.http.put<Resultado>(`${this.utils.apiUrl}/api/admin`, { senha: senha, token: token });
   }
 }

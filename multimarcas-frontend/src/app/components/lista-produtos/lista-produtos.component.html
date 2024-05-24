@@ -1,15 +1,22 @@
 <app-header (filtrarProduto)="onFiltrarProduto($event)"></app-header>
 <body>
+  <div class="d-flex justify-content-center">
+    <span class="mt-0" *ngIf="categorias!.length! > 0 && !carregando">Filtro por Categoria</span>
+  </div>
+  <div class="d-flex justify-content-center mb-2 gap-2">
+    <mat-button-toggle-group appearance="legacy" aria-label="Categorias" [(ngModel)]="selected">
+      <mat-button-toggle value="todos" [checked]="pressionado" (click)="listarProdutos()">TODOS</mat-button-toggle>
+      <mat-button-toggle *ngFor="let categoria of categorias" (click)="listarProdutosCategoria(categoria.id.toString())">{{categoria.categoria | uppercase}}</mat-button-toggle>
+    </mat-button-toggle-group>
+  </div>
   <div *ngIf="lista.length <= 0; else existemProdutos"
   style="display: flex; flex: 1; align-items: center; justify-content: center">
-  <h2>Não há produtos disponíveis no momento</h2>
+  <h2>Não há produtos a serem exibidos.</h2>
 </div>
 
 <ng-template #existemProdutos>
-  <div class="row mb-2 mt-1" style="max-width: 99%; margin-left: 0.5vw">
-    <div>
-      <span></span>
-    </div>
+  <div class="row mb-0 mt-1" style="max-width: 99%; margin-left: 0.5vw;">
+    
     <hr />
     <div style="
         display: flex;
@@ -20,15 +27,15 @@
         gap: 10px;
       ">
       <div *ngFor="let produto of lista" class="divProduto">
-        <div class="card mb-4 shadow-sm" style="height: 100%; align-items: center">
+        <div class="card mb-0 shadow-sm" style="height: 100%; align-items: center">
           <h3 class="mb-0 mt-2" style="text-align: center; grid-row: 1">
             <span class="text" style="font-family: cursive">{{
               produto.nome
               }}</span>
           </h3>
           <div class="imgProduto">
-            <img class="" data-src="{{ produto.imagem }}" alt="Thumbnail [200x250]"
-              src="http://localhost:3001/img/{{ produto.imagem }}" class="tamanhoImg" />
+            <img data-src="{{ produto.imagem }}" alt="Thumbnail [200x250]"
+            [src]="produto.imagem != null ? 'http://localhost:3001/img/' + produto.imagem : 'assets/multimarcas.png'" class="tamanhoImg" />
           </div>
           <div class="card-body d-grid" style="align-items: end">
             <div style="
@@ -75,18 +82,11 @@
       </div>
     </div>
 
-    <div *ngIf="carrinhoCheio()">
-      <button class="btn btn-warning text-align-center" style="
-          width: 100%;
-          margin-left: auto;
-          bottom: 20%;
-          position: fixed;
-          opacity: 80%;
-        " (click)="fecharCarrinho()">
-        FINALIZAR COMPRA
-      </button>
-    </div>
-
   </div>
+  
 </ng-template>
+<app-carrinho *ngIf="carrinhoComItems()"></app-carrinho>
+<app-footer></app-footer>
 </body>
+
+

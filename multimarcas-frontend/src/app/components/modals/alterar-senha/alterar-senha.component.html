@@ -1,0 +1,34 @@
+<div class="modal d-block mt-5 pt-3" tabindex="-1" style="z-index: 4;" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title fs-4 mb-0">Alterar senha</h5>
+                <button (click)="fechar()" type="button" class="btn-close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <form [formGroup]="formularioAlterarSenha" (ngSubmit)="alterarSenha()">
+                <div class="modal-body" style="overflow: auto;">
+                    <div class="d-flex align-items-center justify-content-center">
+                        <div class="input-group mb-3">
+                            <span class="input-group-text">Nova Senha</span>
+                            <input formControlName="senha" type="password" class="form-control" placeholder="*********" [ngClass]="{'is-invalid': formularioAlterarSenha.controls['senha'].status == 'INVALID' && formularioAlterarSenha.touched}">
+                        </div>
+                        <div class="input-group mb-3">
+                            <input formControlName="token" type="text" class="form-control" placeholder="Token" aria-label="Token" [ngClass]="{'is-invalid': formularioAlterarSenha.controls['token'].status == 'INVALID' && formularioAlterarSenha.touched}">
+                            <span class="input-group-text">TOKEN</span>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <div class="d-flex justify-content-center w-100">
+                            <button class="btn btn-success w-100" type="submit" [disabled]="formularioAlterarSenha.status.toString() == 'INVALID' || carregando">Alterar</button>
+                        </div>
+                        <div class="d-flex justify-content-center w-100 mt-0 mb-0">
+                            <button class="btn btn-danger w-25" type="button" (click)="fechar()">Fechar</button>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

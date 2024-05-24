@@ -9,8 +9,8 @@ body {
 }
 
 .imgProduto {
-  width: 250px;
-  height: 250px;
+  width: 200px;
+  height: 200px;
   overflow: hidden;
 }
 
@@ -34,4 +34,14 @@ body {
     height: 150px;
     overflow: hidden;
   }
+}
+
+mat-button-toggle-group {
+  background-color: #F05D23;
+}
+mat-button-toggle {
+  color: rgb(37, 37, 37);
+}
+mat-snack-bar{
+  color: #F05D23;
 }
