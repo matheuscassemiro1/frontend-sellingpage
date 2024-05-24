@@ -4,7 +4,7 @@
     right: 0;
 }
 
-.texto-carrinho{
+.texto-carrinho {
     position: absolute;
     bottom: 0;
     right: 0;
@@ -13,4 +13,10 @@
     font-size: 0.8rem;
     text-wrap: wrap;
     z-index: 10;
+}
+
+@media (max-width: 500px) {
+    .overflowphone {
+        overflow-y: scroll;
+    }
 }

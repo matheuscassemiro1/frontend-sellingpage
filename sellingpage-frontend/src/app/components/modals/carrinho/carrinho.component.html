@@ -5,7 +5,7 @@
                 <button class="btn-close mx-1" style="margin-left: 0;" (click)="fecharCardProdutos()"></button>Carrinho ({{contagem}})
             </mat-card-header>
             <hr class="mb-0 p-0">
-            <mat-card-content class="mt-0 p-0 d-flex justify-content-start" style="max-height: 200px; overflow-y: auto;">
+            <mat-card-content class="mt-0 p-0 d-flex justify-content-start overflowphone" style="max-height: 200px; overflow-y: auto;">
                 <mat-list class="mt-0">
                     <mat-list-item *ngFor="let item of items;"><span class="badge rounded-pill bg-danger" (click)="removerItem(item)" style="cursor: pointer;">X</span> {{item.quantidade}}x {{item.nome}}</mat-list-item>
                 </mat-list>

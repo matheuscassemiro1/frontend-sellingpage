@@ -54,7 +54,7 @@ export class ListaProdutosComponent {
 
 
   openSnackBar(produto: Produto) {
-    this._snackBar.open(`${produto.quantidade.toString()}x ${produto.nome.toString()}(s) adicionado(s) ao carrinho`, 'OK', { duration: 1300, verticalPosition: 'bottom' });
+    this._snackBar.open(`${produto.quantidade.toString()}x ${produto.nome.toString()}(s) adicionado(s) ao carrinho`, 'OK', { duration: 1000, verticalPosition: 'bottom' });
   }
   telefoneWhatsapp: string = '';
   carregarMaisConteudo() {

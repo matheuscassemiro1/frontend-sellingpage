@@ -34,11 +34,9 @@ body {
     height: 150px;
     overflow: hidden;
   }
+
 }
 
-/* mat-button-toggle-group {
-  background-color: #F05D23;
-} */
 mat-button-toggle {
   color: rgb(37, 37, 37);
 }
