@@ -36,11 +36,20 @@ body {
   }
 }
 
-mat-button-toggle-group {
+/* mat-button-toggle-group {
   background-color: #F05D23;
-}
+} */
 mat-button-toggle {
   color: rgb(37, 37, 37);
+}
+
+.mat-button-toggle-checked{
+  background-color: #F05D23 !important;
+  color: white;
+}
+mat-button-toggle:active{
+  background-color: #F05D23 !important;
+  color: white;
 }
 mat-snack-bar{
   color: #F05D23;

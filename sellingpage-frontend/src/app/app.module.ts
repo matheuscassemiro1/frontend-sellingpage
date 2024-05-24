@@ -13,8 +13,6 @@ import { TopBarComponent } from './components/top-bar/top-bar.component';
 import { ReactiveFormsModule, FormsModule, FormGroup } from '@angular/forms';
 import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { authGuard } from './guard/auth.guard'
-import { AuthService } from './services/auth.service';
-import { PainelProdutosService } from './services/painel-produtos.service';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { CategoriasComponent } from './components/modals/categorias/categorias.component';
 import { FooterComponent } from './components/footer/footer.component';
@@ -27,7 +25,6 @@ import { MatBadgeModule } from '@angular/material/badge';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import { MatCardModule } from '@angular/material/card';
 import { MatListModule } from '@angular/material/list';
-import { MatButtonModule } from '@angular/material/button';
 import { AlterarSenhaComponent } from './components/modals/alterar-senha/alterar-senha.component';
 import { InterceptorInterceptor } from './interceptors/interceptor.interceptor';
 

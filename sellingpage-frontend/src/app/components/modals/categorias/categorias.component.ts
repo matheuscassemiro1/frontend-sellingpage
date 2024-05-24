@@ -1,5 +1,6 @@
 import { Component, EventEmitter, Output } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { Subscription } from 'rxjs';
 import { Categoria, ProdutosService } from 'src/app/services/produtos.service';
 import { UtilsService } from 'src/app/services/utils.service';
@@ -7,15 +8,20 @@ import { UtilsService } from 'src/app/services/utils.service';
 @Component({
   selector: 'app-categorias',
   templateUrl: './categorias.component.html',
-  styleUrls: ['./categorias.component.css']
+  styleUrls: ['./categorias.component.css'],
+  providers: [MatSnackBar]
 })
 export class CategoriasComponent {
   @Output() fecharModal: EventEmitter<any> = new EventEmitter
 
   constructor(
     private produtosService: ProdutosService,
-    private utils: UtilsService
+    private utils: UtilsService,
+    private _snackBar: MatSnackBar
   ) { }
+  openSnackBar(mensagem: string) {
+    this._snackBar.open(mensagem, 'OK', { duration: 1300, verticalPosition: 'bottom' });
+  }
   private subs = new Subscription()
   formularioCriarCategoria = new FormGroup({
     categoria: new FormControl('', [Validators.nullValidator, Validators.required])
@@ -30,7 +36,7 @@ export class CategoriasComponent {
         this.produtosService.criarCategoria(this.formularioCriarCategoria!.controls['categoria']!.value!).subscribe(e => {
           this.utils.carregandoSubject.next(false)
           if (e.status == 'sucesso') {
-            alert("Categoria cadastrada.")
+            this.openSnackBar("Categoria cadastrada.")
             this.listarCategorias()
             this.fecharModalCriarCategoria()
           } else {
@@ -84,7 +90,7 @@ export class CategoriasComponent {
           this.utils.carregandoSubject.next(false)
           if (e.status == 'sucesso') {
             this.listarCategorias()
-            alert("Categoria excluída.")
+            this.openSnackBar("Categoria excluída.")
           }
         },
           error => {

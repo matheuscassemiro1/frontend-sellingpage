@@ -1,18 +1,24 @@
 import { Component } from '@angular/core';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { Subscription } from 'rxjs';
 import { GestaoService } from 'src/app/services/gestao.service';
 import { UtilsService } from 'src/app/services/utils.service';
 @Component({
   selector: 'app-gestao',
   templateUrl: './gestao.component.html',
-  styleUrls: ['./gestao.component.css']
+  styleUrls: ['./gestao.component.css'],
+  providers: [MatSnackBar]
 })
 export class GestaoComponent {
   constructor(
     private gestaoService: GestaoService,
-    private utils: UtilsService
+    private utils: UtilsService,
+    private _snackBar: MatSnackBar
   ) {
 
+  }
+  openSnackBar(mensagem: string) {
+    this._snackBar.open(mensagem, 'OK', { duration: 1300, verticalPosition: 'bottom' });
   }
   private subs = new Subscription()
   ngOnDestoy() {
@@ -61,7 +67,7 @@ export class GestaoComponent {
           this.gestaoService.criarNumeroWhatsapp(telefone!).subscribe(retorno => {
             this.utils.carregandoSubject.next(false)
             if (retorno.status == "sucesso") {
-              alert("Número cadastrado.")
+              this.openSnackBar("Número cadastrado.")
               location.reload()
             } else {
               alert(retorno.mensagem)
@@ -87,7 +93,7 @@ export class GestaoComponent {
           this.gestaoService.alterarNumeroWhatsapp(telefone!).subscribe(retorno => {
             this.utils.carregandoSubject.next(false)
             if (retorno.status == "sucesso") {
-              alert("Número alterado.")
+              this.openSnackBar("Número cadastrado.")
               location.reload()
             } else {
               alert(retorno.mensagem)

@@ -1,21 +1,19 @@
 import { Component } from '@angular/core';
 import { Inject } from '@angular/core';
-import { Input } from '@angular/core';
 import { DOCUMENT } from '@angular/common'
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { PainelProdutosService } from 'src/app/services/painel-produtos.service';
 import { FormularioProdutoNovo } from 'src/app/services/painel-produtos.service';
 import { Categoria, ProdutosPainel, ProdutosService } from 'src/app/services/produtos.service';
-import { Produto } from 'src/app/services/produtos.service';
-import { produtos } from '../lista-produtos/lista-produtos.component';
-import { ListaProdutosComponent } from '../lista-produtos/lista-produtos.component';
 import { Subscription } from 'rxjs';
 import { UtilsService } from 'src/app/services/utils.service';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-painel-produtos',
   templateUrl: './painel-produtos.component.html',
-  styleUrls: ['./painel-produtos.component.css']
+  styleUrls: ['./painel-produtos.component.css'],
+  providers: [MatSnackBar]
 })
 
 export class PainelProdutosComponent {
@@ -23,8 +21,12 @@ export class PainelProdutosComponent {
     @Inject(DOCUMENT) document: Document,
     private painelProdutosService: PainelProdutosService,
     private produtosService: ProdutosService,
-    private utils: UtilsService
+    private utils: UtilsService,
+    private _snackBar: MatSnackBar
   ) {
+  }
+  openSnackBar(mensagem: string) {
+    this._snackBar.open(mensagem, 'OK', { duration: 1300, verticalPosition: 'bottom' });
   }
   private subs = new Subscription()
 
@@ -87,7 +89,7 @@ export class PainelProdutosComponent {
       this.subs.add(
         this.painelProdutosService.cadastrarProduto(formPost).subscribe((resultado) => {
           if (resultado.status == "sucesso") {
-            alert(`${this.formularioProduto.value.nomeDoProduto!} cadastrado com sucesso.`)
+            this.openSnackBar(`${this.formularioProduto.value.nomeDoProduto!} cadastrado com sucesso.`)
             this.listarProdutosPainel()
             this.formularioProduto.reset()
             this.fechar()
@@ -111,7 +113,7 @@ export class PainelProdutosComponent {
           this.utils.carregandoSubject.next(false)
           if (resultado.status == "sucesso") {
             this.listarProdutosPainel()
-            alert("Produto excluído com sucesso!")
+            this.openSnackBar("Produto excluído com sucesso!")
           } else {
             alert(resultado.mensagem)
           }
@@ -172,7 +174,7 @@ export class PainelProdutosComponent {
           document.getElementById('modalAlterarPrecoProduto')?.classList.remove('d-block')
           document.getElementById('idProdutoAltPreco')!.textContent = ``
           this.formularioNovoPreco.reset()
-          alert("O preço do produto foi alterado com sucesso!")
+          this.openSnackBar("O preço do produto foi alterado com sucesso!")
           this.listarProdutosPainel()
         } else {
           alert(resultado.mensagem)
@@ -231,8 +233,7 @@ export class PainelProdutosComponent {
             document.getElementById('idProdutoAltCategoria')!.textContent = ``
             this.listarProdutosPainel()
             this.formularioNovaCategoria.reset()
-            alert("Categoria alterada!")
-
+            this.openSnackBar("Categoria alterada!")
           }
         }, error => {
           alert(JSON.stringify(error.message))
@@ -251,7 +252,7 @@ export class PainelProdutosComponent {
           this.utils.carregandoSubject.next(false)
           if (resultado.status == "sucesso") {
             this.listarProdutosPainel()
-            alert("A imagem do produto foi alterada com sucesso!")
+            this.openSnackBar("A imagem do produto foi alterada com sucesso!")
             location.reload()
           } else {
             alert(resultado.mensagem)
