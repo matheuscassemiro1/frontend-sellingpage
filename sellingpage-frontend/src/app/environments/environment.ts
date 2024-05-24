@@ -1,4 +1,4 @@
 export const environment = {
-    API: 'http://localhost:3001',
+    API: 'https://backend-sellingpage.vercel.app',
     production: true
 }
