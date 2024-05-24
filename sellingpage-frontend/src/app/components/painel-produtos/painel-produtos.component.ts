@@ -204,6 +204,7 @@ export class PainelProdutosComponent {
     this.subs.add(
       this.produtosService.getCategorias().subscribe(e => {
         if (e.status == 'sucesso') {
+          this.utils.carregandoSubject.next(false)
           this.categorias = e.mensagem
         }
       },
