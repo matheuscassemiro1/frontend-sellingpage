@@ -41,14 +41,31 @@ mat-button-toggle {
   color: rgb(37, 37, 37);
 }
 
-.mat-button-toggle-checked{
+.mat-button-toggle-checked {
   background-color: #F05D23 !important;
   color: white;
 }
-mat-button-toggle:active{
+
+mat-button-toggle:active {
   background-color: #F05D23 !important;
   color: white;
 }
-mat-snack-bar{
+
+mat-snack-bar {
   color: #F05D23;
+}
+
+.btn {
+  transition-property: transform;
+  transition-duration: 800ms;
+}
+
+.imgProduto:is(:hover) {
+  transition-property: transform;
+  transition-duration: 800ms;
+  transform: scale(1.3);
+}
+
+.btnCarrinho:is(:hover) {
+  transform: scale(1.2);
 }
