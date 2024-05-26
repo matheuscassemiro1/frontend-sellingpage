@@ -1,7 +1,5 @@
 <app-top-bar></app-top-bar>
-
-<body>
-    <div class="d-flex justify-content-center mt-2 gap-2 mx-2 flex-wrap" style="overflow: hidden;">
+    <div class="d-flex flex-column justify-content-center mt-2 gap-2 mx-2 flex-wrap p-4" style="overflow: hidden;">
         <div>
             <div class="card flex-row mb-4 ml-1 px-1 text-center">
                 <div class="card-body ">
@@ -19,10 +17,10 @@
                     <h5 class="card-title fs-5">Whatsapp para Redirecionar Pedidos</h5>
                     <h6 class="card-subtitle mb-2 text-muted" style="font-size: 1rem;">Número: <b>{{whatsapp}}</b></h6>
                     <div *ngIf="whatsapp == 'N/A' else existeNumero">
-                        <button class="btn btn-success m-2" (click)="cadastrarNovoWhatsapp()">Criar</button>
+                        <button class="btn btn-success m-2" (click)="abrirModalAltWhatsapp()">Criar</button>
                     </div>
                     <ng-template #existeNumero>
-                        <button class="btn btn-warning m-2" (click)="alterarNumeroWhatsapp()">Alterar</button>
+                        <button class="btn btn-warning m-2" (click)="abrirModalAltWhatsapp()">Alterar</button>
                     </ng-template>
 
                 </div>
@@ -43,7 +41,5 @@
 
 
 <app-categorias *ngIf="modalCategorias" (fecharModal)="fecharModalCategorias()"></app-categorias>
-
-</body>
+<app-alterar-whatsapp *ngIf="modalWhatsapp" (fecharModal)="fecharModalAltWhatsapp()" [alteracao]="alterarWhatsapp"></app-alterar-whatsapp>
 <app-alterar-senha *ngIf="modalAlterarSenha" (fecharModal)="fecharModalAlterarSenha()"></app-alterar-senha>
-<app-footer></app-footer>

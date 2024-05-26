@@ -4,5 +4,6 @@
     }
     .mobile{
         margin-bottom: 2%;
+        gap: 1rem !important;
     }
 }

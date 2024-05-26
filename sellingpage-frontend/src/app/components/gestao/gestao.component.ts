@@ -24,10 +24,21 @@ export class GestaoComponent {
   ngOnDestoy() {
     this.subs.unsubscribe()
   }
+  alterarWhatsapp = false;
   modalCategorias = false;
   whatsapp: string = '';
   modalAlterarSenha = false;
-
+  modalWhatsapp = false;
+  abrirModalAltWhatsapp(){
+    if (this.whatsapp.length > 0){
+      this.alterarWhatsapp = true;
+    }
+    this.modalWhatsapp = true
+  }
+  fecharModalAltWhatsapp(){
+    this.buscarNumeroWhatsapp()
+    this.modalWhatsapp = false
+  }
   abrirModalAlterarSenha() {
     this.modalAlterarSenha = true;
   }
@@ -41,8 +52,7 @@ export class GestaoComponent {
   fecharModalCategorias() {
     this.modalCategorias = false;
   }
-
-  ngOnInit() {
+  buscarNumeroWhatsapp(){
     this.utils.carregandoSubject.next(true)
     this.subs.add(
       this.gestaoService.buscarWhatsapp().subscribe(retorno => {
@@ -55,56 +65,8 @@ export class GestaoComponent {
       })
     )
   }
-
-  cadastrarNovoWhatsapp() {
-    if (confirm('Deseja criar o número de redirecionamento?')) {
-      let telefone = prompt("Insira o novo telefone: Ex: 27999552202")
-      if (telefone == '' || telefone == null) {
-        alert("O número não pode estar em branco.")
-      } else {
-        this.utils.carregandoSubject.next(true)
-        this.subs.add(
-          this.gestaoService.criarNumeroWhatsapp(telefone!).subscribe(retorno => {
-            this.utils.carregandoSubject.next(false)
-            if (retorno.status == "sucesso") {
-              this.openSnackBar("Número cadastrado.")
-              location.reload()
-            } else {
-              alert(retorno.mensagem)
-            }
-          },
-          error => {
-            alert(JSON.stringify(error.name))
-            this.utils.carregandoSubject.next(false)
-          })
-        )
-      }
-    }
+  ngOnInit() {
+    this.buscarNumeroWhatsapp()
   }
 
-  alterarNumeroWhatsapp() {
-    if (confirm('Deseja alterar o número de redirecionamento?')) {
-      let telefone = prompt("Insira o novo telefone: Ex: 27999552202")
-      if (telefone == '' || telefone == null) {
-        alert("O número não pode estar em branco.")
-      } else {
-        this.utils.carregandoSubject.next(true)
-        this.subs.add(
-          this.gestaoService.alterarNumeroWhatsapp(telefone!).subscribe(retorno => {
-            this.utils.carregandoSubject.next(false)
-            if (retorno.status == "sucesso") {
-              this.openSnackBar("Número cadastrado.")
-              location.reload()
-            } else {
-              alert(retorno.mensagem)
-            }
-          },
-          error => {
-            alert(JSON.stringify(error.name))
-            this.utils.carregandoSubject.next(false)
-          })
-        )
-      }
-    }
-  }
 }

@@ -15,20 +15,18 @@
   <div class="d-block">
     <img width="100%" src="/assets/welcome.jpeg" />
   </div>
-  <nav class="navbar p-absolute">
-    <div class="container-fluid">
-      <a class="navbar-brand" routerLink="/login">Nome da Marca (Clique para ir ao painel)</a>
-      <a href="/" class="mobile" style="text-decoration: none; color: black; font-weight: 500;"><img style="width: 40px; height: 40px;" src="./../../../assets/whatsappicon.png" alt="Ícone whatsapp"> <span>Falar no Whatsapp</span></a>
-      <a href="/" class="mobile" style="text-decoration: none; color: black; font-weight: 500;"><img style="width: 40px; height: 40px;" src="./../../../assets/telefone.png" alt=""> <span> (27) XXXXX-XXXX</span></a>
+  <nav class="navbar p-absolute" style="padding-right: 5%; padding-left: 5%;">
+    <div class="container-fluid justify-content-center gap-5 mobile">
+      <a href="/" class="mobile" style="text-decoration: none; color: black; font-weight: 500;"><img style="width: 40px; height: 40px; margin-right: 5px;" src="./../../../assets/whatsappicon.png" alt="Ícone whatsapp"><span>Falar no Whatsapp</span></a>
+      <a href="/" class="mobile" style="text-decoration: none; color: black; font-weight: 500;"><img style="width: 40px; height: 40px; margin-right: 5px;" src="./../../../assets/telefone.png" alt="Ícone de telefone"><span> (27) XXXXX-XXXX</span></a>
       <form class="barraBusca d-flex" role="search">
         <input (input)="consoleTexto(texto.value)" #texto
           class="form-control me-2"
           type="search"
           style="opacity: 80%"
-          placeholder="Nome do Produto"
+          placeholder="Pesquisar produto"
           aria-label="Search"
         />
-        <button class="btn btn-outline-success" (click)="consoleTexto(texto.value)">Pesquisar</button>
       </form>
     </div>
   </nav>

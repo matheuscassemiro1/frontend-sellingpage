@@ -1,4 +1,4 @@
-import { NgModule } from '@angular/core';
+import { DEFAULT_CURRENCY_CODE, LOCALE_ID, NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 
 import { AppRoutingModule } from './app-routing.module';
@@ -27,6 +27,11 @@ import { MatCardModule } from '@angular/material/card';
 import { MatListModule } from '@angular/material/list';
 import { AlterarSenhaComponent } from './components/modals/alterar-senha/alterar-senha.component';
 import { InterceptorInterceptor } from './interceptors/interceptor.interceptor';
+import { AlterarWhatsappComponent } from './components/modals/alterar-whatsapp/alterar-whatsapp.component';
+import ptBr from '@angular/common/locales/pt';
+import { registerLocaleData } from '@angular/common';
+// registerlocaledata
+registerLocaleData(ptBr);
 
 @NgModule({
   imports: [
@@ -61,9 +66,18 @@ import { InterceptorInterceptor } from './interceptors/interceptor.interceptor';
     LoadingComponent,
     CarrinhoComponent,
     CartComponent,
-    AlterarSenhaComponent
+    AlterarSenhaComponent,
+    AlterarWhatsappComponent
   ],
-  providers: [{ provide: HTTP_INTERCEPTORS, useClass: InterceptorInterceptor, multi: true }],
+  providers: [
+    { provide: HTTP_INTERCEPTORS, useClass: InterceptorInterceptor, multi: true }, {
+      provide: LOCALE_ID,
+      useValue: 'pt-BR'
+    },
+    {
+      provide: DEFAULT_CURRENCY_CODE,
+      useValue: 'BRL'
+    },],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

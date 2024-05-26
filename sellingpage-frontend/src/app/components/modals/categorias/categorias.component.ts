@@ -91,6 +91,8 @@ export class CategoriasComponent {
           if (e.status == 'sucesso') {
             this.listarCategorias()
             this.openSnackBar("Categoria excluída.")
+          } else {
+            alert(e.mensagem)
           }
         },
           error => {
