@@ -73,9 +73,8 @@ export class ListaProdutosComponent {
               }
               retorno.mensagem.forEach(elemento => {
                 elemento.quantidade = 1;
-                this.lista.push(elemento)
+                produtos.push(elemento)
               })
-
             }
           },
           error => {
@@ -122,6 +121,7 @@ export class ListaProdutosComponent {
   listarProdutos() {
     this.pesquisaGlobal = true;
     this.carregando = true;
+
     if (produtos.length > 0) {
       this.carregando = false;
       this.lista = produtos
@@ -145,7 +145,6 @@ export class ListaProdutosComponent {
   }
   listarProdutosCategoria(categoria: string) {
     this.pesquisaGlobal = false;
-    this.pagina = 1;
     this.utils.carregandoSubject.next(true)
     this.carregando = true;
     this.lista = []
