@@ -4,8 +4,8 @@
     <span class="mt-0 p-2" *ngIf="categorias!.length! > 0 && !carregando" style="background-color: white; border-radius: 5% 5% 0% 0%;">Filtro por Categoria</span>
   </div>
  <div style="position: sticky; top: 0; z-index: 100;">
-  <div class="d-flex justify-content-center mb-2 gap-2">
-    <mat-button-toggle-group appearance="legacy" aria-label="Categorias" [(ngModel)]="selected" style="background-color: white;">
+  <div class="d-flex justify-content-center mb-2 gap-2" >
+    <mat-button-toggle-group appearance="legacy" aria-label="Categorias" [(ngModel)]="selected" style="background-color: white; overflow-x: auto;">
       <mat-button-toggle value="todos" [checked]="pressionado" (click)="listarProdutos()">TODOS</mat-button-toggle>
       <mat-button-toggle *ngFor="let categoria of categorias" (click)="listarProdutosCategoria(categoria.id.toString())">{{categoria.categoria | uppercase}}</mat-button-toggle>
     </mat-button-toggle-group>
