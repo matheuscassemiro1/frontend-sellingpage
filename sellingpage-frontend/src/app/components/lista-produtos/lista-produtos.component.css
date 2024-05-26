@@ -23,6 +23,9 @@ body {
   top: 0;
   z-index: 1500;
 }
+mat-button-toggle:hover{
+  opacity: 80% !important;
+}
 
 .tamanhoImg {
   object-fit: contain;
